@@ -1,0 +1,4345 @@
+styles.css:
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #ffffff;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+body.theory-mode {
+    background: #fff5f5;
+}
+
+h1 {
+    color: #344861;
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+}
+
+.theory-banner {
+    display: none;
+    background: #ffebee;
+    color: #d32f2f;
+    padding: 12px 30px;
+    border-radius: 30px;
+    margin-bottom: 15px;
+    font-weight: 600;
+    font-size: 1rem;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    animation: pulse-banner 2s infinite;
+}
+
+.theory-banner.active {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+@keyframes pulse-banner {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+}
+
+.difficulty-container {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.difficulty-btn {
+    padding: 10px 16px;
+    border: 2px solid #344861;
+    border-radius: 25px;
+    background: transparent;
+    color: #344861;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.difficulty-btn:hover {
+    background: #e2ebf3;
+}
+
+.difficulty-btn.active {
+    background: #344861;
+    color: white;
+    border-color: #344861;
+    font-weight: 600;
+}
+
+.difficulty-btn.easy.active { background: #4caf50; border-color: #4caf50; }
+.difficulty-btn.medium.active { background: #2196f3; border-color: #2196f3; }
+.difficulty-btn.hard.active { background: #ff9800; border-color: #ff9800; }
+.difficulty-btn.expert.active { background: #f44336; border-color: #f44336; }
+.difficulty-btn.master.active { background: #9c27b0; border-color: #9c27b0; }
+.difficulty-btn.extreme.active { background: #212121; border-color: #212121; }
+
+.settings-container {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.setting-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #344861;
+    font-size: 14px;
+}
+
+.setting-item input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+.setting-item label {
+    cursor: pointer;
+}
+
+.check-answers-btn {
+    padding: 8px 16px;
+    border: 2px solid #344861;
+    border-radius: 20px;
+    background: transparent;
+    color: #344861;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.check-answers-btn:hover {
+    background: #e2ebf3;
+}
+
+.check-answers-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.stats-bar {
+    display: flex;
+    gap: 30px;
+    color: #344861;
+    font-size: 1.1rem;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.timer {
+    font-family: monospace;
+    font-size: 1.3rem;
+}
+
+.pause-btn {
+    background: #e2ebf3;
+    border: none;
+    color: #344861;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.pause-btn:hover {
+    background: #d0dcea;
+}
+
+.game-container {
+    display: flex;
+    gap: 30px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.board-wrapper {
+    position: relative;
+}
+
+.board {
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+    background: #344861;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+    border: 2px solid #344861;
+}
+
+.theory-mode .board {
+    border: 2px solid #d32f2f;
+    box-shadow: 0 5px 20px rgba(211, 47, 47, 0.3);
+}
+
+.cell {
+    width: 52px;
+    height: 52px;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.1s, transform 0.2s;
+    border: 1px solid #bec6d4;
+    position: relative;
+    color: #325aaf;
+}
+
+.cell:hover {
+    background: #e2ebf3;
+}
+
+.cell.border-right {
+    border-right: 2px solid #344861;
+}
+
+.cell.border-bottom {
+    border-bottom: 2px solid #344861;
+}
+
+.cell.highlighted-row-col {
+    background: #e2ebf3;
+}
+
+.cell.highlighted-box {
+    background: #e2ebf3;
+}
+
+.cell.same-number {
+    background: #c3d7ea;
+}
+
+.cell.selected {
+    background: #bbdefb;
+}
+
+.cell.hover-highlight {
+    background: #c3d7ea;
+}
+
+.cell.given {
+    color: #344861;
+    font-weight: 700;
+}
+
+.cell.correct {
+    color: #325aaf;
+}
+
+.cell.error {
+    color: #e55c6c;
+    background: #f7cfd6;
+}
+
+.cell.error.selected {
+    background: #f7cfd6;
+}
+
+.cell.error.highlighted-row-col,
+.cell.error.highlighted-box,
+.cell.error.same-number {
+    background: #f7cfd6;
+}
+
+.cell.same-number-error {
+    background: #f7cfd6;
+}
+
+.cell.revealed-error {
+    background: #f7cfd6;
+    color: #e55c6c;
+}
+
+.cell.theory-placed {
+    color: #9c27b0;
+    font-style: italic;
+}
+
+/* Completion animations */
+.cell.row-complete {
+    animation: rowComplete 0.6s ease-out;
+}
+
+.cell.col-complete {
+    animation: colComplete 0.6s ease-out;
+}
+
+.cell.box-complete {
+    animation: boxComplete 0.6s ease-out;
+}
+
+.cell.game-complete {
+    animation: gameComplete 0.8s ease-out;
+}
+
+@keyframes rowComplete {
+    0% { background: white; transform: scale(1); }
+    50% { background: #a5d6a7; transform: scale(1.08); }
+    100% { background: white; transform: scale(1); }
+}
+
+@keyframes colComplete {
+    0% { background: white; transform: scale(1); }
+    50% { background: #a5d6a7; transform: scale(1.08); }
+    100% { background: white; transform: scale(1); }
+}
+
+@keyframes boxComplete {
+    0% { background: white; transform: scale(1); }
+    50% { background: #a5d6a7; transform: scale(1.08); }
+    100% { background: white; transform: scale(1); }
+}
+
+@keyframes gameComplete {
+    0% { background: white; transform: scale(1); }
+    50% { background: #a5d6a7; transform: scale(1.15); }
+    100% { background: #a5d6a7; transform: scale(1); }
+}
+
+.cell.number-complete {
+    animation: numberComplete 0.5s ease-out;
+}
+
+@keyframes numberComplete {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); color: #2e7d32; }
+    100% { transform: scale(1); }
+}
+
+/* Ripple effect overlay */
+.ripple-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+.ripple {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(76, 175, 80, 0.4) 0%, rgba(76, 175, 80, 0) 70%);
+    transform: scale(0);
+    animation: rippleEffect 1s ease-out forwards;
+}
+
+@keyframes rippleEffect {
+    0% { transform: scale(0); opacity: 1; }
+    100% { transform: scale(4); opacity: 0; }
+}
+
+.notes-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    width: 100%;
+    height: 100%;
+    padding: 2px;
+}
+
+.note {
+    font-size: 11px;
+    color: #6e7f8d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+    border-radius: 2px;
+    transition: all 0.1s;
+}
+
+.note.highlighted-note {
+    color: #325aaf;
+    font-weight: 700;
+    font-size: 13px;
+    background: #bbdefb;
+    transform: scale(1.1);
+}
+
+.controls {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.number-pad {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+}
+
+.number-btn {
+    width: 60px;
+    height: 70px;
+    border: none;
+    border-radius: 8px;
+    background: #f0f4f8;
+    font-size: 26px;
+    font-weight: 600;
+    color: #325aaf;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+}
+
+.number-btn:hover:not(.completed) {
+    transform: translateY(-2px);
+    background: #e2ebf3;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+}
+
+.number-btn:active:not(.completed) {
+    transform: translateY(0);
+}
+
+.number-btn.completed {
+    opacity: 0.35;
+    cursor: default;
+}
+
+.number-btn .count {
+    font-size: 11px;
+    color: #9e9e9e;
+    margin-top: 2px;
+}
+
+.action-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.action-btn {
+    padding: 14px 20px;
+    border: none;
+    border-radius: 8px;
+    background: #f0f4f8;
+    font-size: 14px;
+    font-weight: 500;
+    color: #344861;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+}
+
+.action-btn:hover:not(:disabled) {
+    background: #e2ebf3;
+    transform: translateY(-1px);
+}
+
+.action-btn.notes-active {
+    background: #325aaf;
+    color: white;
+}
+
+.action-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.action-btn.auto-notes {
+    background: #fff3e0;
+    color: #e65100;
+}
+
+.action-btn.auto-notes:hover:not(:disabled) {
+    background: #ffe0b2;
+}
+
+.theory-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 10px;
+    padding-top: 15px;
+    border-top: 2px dashed #bec6d4;
+}
+
+.theory-btn {
+    padding: 14px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+}
+
+.theory-btn.enter {
+    background: #325aaf;
+    color: white;
+}
+
+.theory-btn.enter:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(50, 90, 175, 0.3);
+}
+
+.theory-btn.apply {
+    background: #4caf50;
+    color: white;
+}
+
+.theory-btn.apply:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(76, 175, 80, 0.3);
+}
+
+.theory-btn.revert {
+    background: #e55c6c;
+    color: white;
+}
+
+.theory-btn.revert:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(229, 92, 108, 0.3);
+}
+
+.theory-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+.keyboard-info {
+    background: #f0f4f8;
+    padding: 12px;
+    border-radius: 8px;
+    color: #344861;
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.keyboard-info strong {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.pause-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(52, 72, 97, 0.95);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    z-index: 10;
+}
+
+.pause-overlay .icon {
+    font-size: 3rem;
+    margin-bottom: 10px;
+}
+
+.pause-overlay .text {
+    font-size: 1.2rem;
+}
+
+.resume-btn {
+    margin-top: 20px;
+    padding: 12px 30px;
+    background: white;
+    border: none;
+    border-radius: 25px;
+    font-size: 16px;
+    cursor: pointer;
+    color: #344861;
+    font-weight: 600;
+}
+
+.resume-btn:hover {
+    background: #f0f0f0;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+}
+
+.modal {
+    background: white;
+    padding: 40px 50px;
+    border-radius: 20px;
+    text-align: center;
+    animation: popIn 0.3s ease-out;
+    max-width: 90%;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+}
+
+@keyframes popIn {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.modal .icon {
+    font-size: 4rem;
+    margin-bottom: 15px;
+}
+
+.modal h2 {
+    color: #4caf50;
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.modal p {
+    color: #666;
+    margin-bottom: 5px;
+    font-size: 1.1rem;
+}
+
+.modal .stats {
+    color: #888;
+    margin-bottom: 25px;
+}
+
+.modal .play-again-btn {
+    padding: 15px 40px;
+    background: #325aaf;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.modal .play-again-btn:hover {
+    transform: scale(1.05);
+}
+
+.hint-modal {
+    background: white;
+    padding: 30px 40px;
+    border-radius: 15px;
+    max-width: 500px;
+    text-align: left;
+    animation: popIn 0.3s ease-out;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+}
+
+.hint-modal h3 {
+    color: #325aaf;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.hint-modal .technique {
+    background: #e2ebf3;
+    padding: 8px 15px;
+    border-radius: 20px;
+    color: #325aaf;
+    font-size: 14px;
+    font-weight: 600;
+    display: inline-block;
+    margin-bottom: 15px;
+}
+
+.hint-modal .explanation {
+    color: #444;
+    line-height: 1.7;
+    margin-bottom: 20px;
+}
+
+.hint-modal .highlight-info {
+    background: #fff3e0;
+    padding: 12px 15px;
+    border-radius: 8px;
+    color: #e65100;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.hint-modal .no-hint-warning {
+    background: #ffebee;
+    padding: 12px 15px;
+    border-radius: 8px;
+    color: #c62828;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.hint-modal .btn-group {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.hint-modal .close-btn {
+    padding: 10px 25px;
+    background: #325aaf;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.hint-modal .close-btn:hover {
+    background: #1e3a6e;
+}
+
+.hint-modal .apply-btn {
+    padding: 10px 25px;
+    background: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.hint-modal .apply-btn:hover {
+    background: #388e3c;
+}
+
+.hint-modal .fill-notes-btn {
+    padding: 10px 25px;
+    background: #ff9800;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.hint-modal .fill-notes-btn:hover {
+    background: #f57c00;
+}
+
+.confirm-modal {
+    background: white;
+    padding: 30px 40px;
+    border-radius: 15px;
+    max-width: 450px;
+    text-align: center;
+    animation: popIn 0.3s ease-out;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+}
+
+.confirm-modal h3 {
+    color: #344861;
+    margin-bottom: 15px;
+}
+
+.confirm-modal p {
+    color: #666;
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+.confirm-modal .changes-summary {
+    background: #f5f5f5;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.confirm-modal .changes-summary ul {
+    margin: 10px 0 0 20px;
+}
+
+.confirm-modal .btn-group {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.confirm-modal .cancel-btn {
+    padding: 12px 25px;
+    background: #9e9e9e;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.confirm-modal .cancel-btn:hover {
+    background: #757575;
+}
+
+.confirm-modal .confirm-btn {
+    padding: 12px 25px;
+    background: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.confirm-modal .confirm-btn:hover {
+    background: #388e3c;
+}
+
+.check-modal {
+    background: white;
+    padding: 30px 40px;
+    border-radius: 15px;
+    max-width: 400px;
+    text-align: center;
+    animation: popIn 0.3s ease-out;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+}
+
+.check-modal h3 {
+    color: #344861;
+    margin-bottom: 20px;
+}
+
+.check-modal .result {
+    font-size: 1.2rem;
+    color: #666;
+    margin-bottom: 20px;
+    padding: 15px;
+    background: #f5f5f5;
+    border-radius: 10px;
+}
+
+.check-modal .result.perfect {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+.check-modal .result.has-errors {
+    background: #f7cfd6;
+    color: #e55c6c;
+}
+
+.check-modal .btn-group {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.check-modal .modal-btn {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.check-modal .close-btn {
+    background: #9e9e9e;
+    color: white;
+}
+
+.check-modal .close-btn:hover {
+    background: #757575;
+}
+
+.check-modal .reveal-btn {
+    background: #ff9800;
+    color: white;
+}
+
+.check-modal .reveal-btn:hover {
+    background: #f57c00;
+}
+
+.loading {
+    color: #344861;
+    font-size: 1.5rem;
+    text-align: center;
+    margin-top: 100px;
+}
+
+.loading .spinner {
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    border: 4px solid #e2ebf3;
+    border-top-color: #325aaf;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 20px;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+@media (max-width: 600px) {
+    .cell {
+        width: 38px;
+        height: 38px;
+        font-size: 18px;
+    }
+    .note {
+        font-size: 8px;
+    }
+    .number-btn {
+        width: 50px;
+        height: 60px;
+        font-size: 22px;
+    }
+    h1 {
+        font-size: 1.8rem;
+    }
+    .stats-bar {
+        gap: 15px;
+        font-size: 0.9rem;
+    }
+    .difficulty-btn {
+        padding: 8px 12px;
+        font-size: 11px;
+    }
+}
+
+
+Animations.js:
+export class Animations {
+    constructor(game) {
+        this.game = game;
+        this.cellSize = 52;
+    }
+
+    animateRow(row) {
+        const cells = document.querySelectorAll('.cell');
+        for (let col = 0; col < 9; col++) {
+            const index = row * 9 + col;
+            setTimeout(() => {
+                cells[index].classList.add('row-complete');
+                setTimeout(() => cells[index].classList.remove('row-complete'), 600);
+            }, col * 50);
+        }
+    }
+
+    animateCol(col) {
+        const cells = document.querySelectorAll('.cell');
+        for (let row = 0; row < 9; row++) {
+            const index = row * 9 + col;
+            setTimeout(() => {
+                cells[index].classList.add('col-complete');
+                setTimeout(() => cells[index].classList.remove('col-complete'), 600);
+            }, row * 50);
+        }
+    }
+
+    animateBox(row, col) {
+        const boxRow = Math.floor(row / 3) * 3;
+        const boxCol = Math.floor(col / 3) * 3;
+        const cells = document.querySelectorAll('.cell');
+        let delay = 0;
+        for (let i = 0; i < 3; i++) {
+            for (let j = 0; j < 3; j++) {
+                const index = (boxRow + i) * 9 + (boxCol + j);
+                setTimeout(() => {
+                    cells[index].classList.add('box-complete');
+                    setTimeout(() => cells[index].classList.remove('box-complete'), 600);
+                }, delay);
+                delay += 50;
+            }
+        }
+    }
+
+    animateNumber(num, board) {
+        const cells = document.querySelectorAll('.cell');
+        let delay = 0;
+        for (let row = 0; row < 9; row++) {
+            for (let col = 0; col < 9; col++) {
+                if (board[row][col] === num) {
+                    const index = row * 9 + col;
+                    setTimeout(() => {
+                        cells[index].classList.add('number-complete');
+                        setTimeout(() => cells[index].classList.remove('number-complete'), 500);
+                    }, delay);
+                    delay += 80;
+                }
+            }
+        }
+    }
+
+    animateGameComplete(originRow, originCol) {
+        const cells = document.querySelectorAll('.cell');
+
+        // Animate from the origin cell outward
+        for (let row = 0; row < 9; row++) {
+            for (let col = 0; col < 9; col++) {
+                const distance = Math.abs(row - originRow) + Math.abs(col - originCol);
+                const index = row * 9 + col;
+                setTimeout(() => {
+                    cells[index].classList.add('game-complete');
+                    setTimeout(() => cells[index].classList.remove('game-complete'), 800);
+                }, distance * 80);
+            }
+        }
+
+        // Add ripple effect from origin cell
+        this.createRipple(originRow, originCol);
+    }
+
+    createRipple(row, col) {
+        const overlay = document.getElementById('rippleOverlay');
+        const ripple = document.createElement('div');
+        ripple.className = 'ripple';
+        
+        const x = col * this.cellSize + this.cellSize / 2;
+        const y = row * this.cellSize + this.cellSize / 2;
+        
+        ripple.style.left = x + 'px';
+        ripple.style.top = y + 'px';
+        ripple.style.width = '100px';
+        ripple.style.height = '100px';
+        ripple.style.marginLeft = '-50px';
+        ripple.style.marginTop = '-50px';
+        
+        overlay.appendChild(ripple);
+        
+        setTimeout(() => ripple.remove(), 1000);
+    }
+}
+
+
+HintFinder.js:
+export class HintFinder {
+    constructor(game) {
+        this.game = game;
+    }
+
+    isValidPlacement(board, row, col, num) {
+        for (let x = 0; x < 9; x++) {
+            if (board[row][x] === num) return false;
+        }
+
+        for (let x = 0; x < 9; x++) {
+            if (board[x][col] === num) return false;
+        }
+
+        const boxRow = Math.floor(row / 3) * 3;
+        const boxCol = Math.floor(col / 3) * 3;
+        for (let i = 0; i < 3; i++) {
+            for (let j = 0; j < 3; j++) {
+                if (board[boxRow + i][boxCol + j] === num) return false;
+            }
+        }
+
+        return true;
+    }
+
+    rowHas(board, row, num) {
+        for (let col = 0; col < 9; col++) {
+            if (board[row][col] === num) return true;
+        }
+        return false;
+    }
+
+    colHas(board, col, num) {
+        for (let row = 0; row < 9; row++) {
+            if (board[row][col] === num) return true;
+        }
+        return false;
+    }
+
+    boxHas(board, boxRow, boxCol, num) {
+        for (let i = 0; i < 3; i++) {
+            for (let j = 0; j < 3; j++) {
+                if (board[boxRow * 3 + i][boxCol * 3 + j] === num) return true;
+            }
+        }
+        return false;
+    }
+
+    findAllHints(board, notes) {
+        const allHints = [];
+
+        const nakedSingles = this.findAllNakedSingles(board);
+        nakedSingles.forEach(h => allHints.push({ technique: 'Naked Single', hint: h }));
+
+        const hiddenSingles = this.findAllHiddenSingles(board);
+        hiddenSingles.forEach(h => allHints.push({ technique: 'Hidden Single', hint: h }));
+
+        const pointingPairs = this.findAllPointingPairs(board, notes);
+        pointingPairs.forEach(h => allHints.push({ technique: 'Pointing Pair', hint: h }));
+
+        const boxLineReductions = this.findAllBoxLineReductions(board, notes);
+        boxLineReductions.forEach(h => allHints.push({ technique: 'Box/Line Reduction', hint: h }));
+
+        const nakedPairs = this.findAllNakedPairs(board, notes);
+        nakedPairs.forEach(h => allHints.push({ technique: 'Naked Pair', hint: h }));
+
+        return allHints;
+    }
+
+    findAllNakedSingles(board) {
+        const hints = [];
+        for (let row = 0; row < 9; row++) {
+            for (let col = 0; col < 9; col++) {
+                if (board[row][col] === 0) {
+                    const candidates = [];
+                    for (let num = 1; num <= 9; num++) {
+                        if (this.isValidPlacement(board, row, col, num)) {
+                            candidates.push(num);
+                        }
+                    }
+                    if (candidates.length === 1) {
+                        hints.push({
+                            type: 'place',
+                            row,
+                            col,
+                            value: candidates[0],
+                            explanation: `Look at the cell in row ${row + 1}, column ${col + 1}. After checking all the numbers that appear in its row, column, and 3x3 box, there's only ONE number that can go here: ${candidates[0]}.`,
+                            highlight: `The cell at R${row + 1}C${col + 1} can only be ${candidates[0]}.`
+                        });
+                    }
+                }
+            }
+        }
+        return hints;
+    }
+
+    findAllHiddenSingles(board) {
+        const hints = [];
+
+        for (let row = 0; row < 9; row++) {
+            for (let num = 1; num <= 9; num++) {
+                if (this.rowHas(board, row, num)) continue;
+                
+                const positions = [];
+                for (let col = 0; col < 9; col++) {
+                    if (board[row][col] === 0 && this.isValidPlacement(board, row, col, num)) {
+                        positions.push(col);
+                    }
+                }
+                
+                if (positions.length === 1) {
+                    const col = positions[0];
+                    hints.push({
+                        type: 'place',
+                        row,
+                        col,
+                        value: num,
+                        explanation: `In row ${row + 1}, the number ${num} can only go in one position.`,
+                        highlight: `${num} must go in R${row + 1}C${col + 1} - it's the only place in row ${row + 1} where it fits!`
+                    });
+                }
+            }
+        }
+
+        for (let col = 0; col < 9; col++) {
+            for (let num = 1; num <= 9; num++) {
+                if (this.colHas(board, col, num)) continue;
+                
+                const positions = [];
+                for (let row = 0; row < 9; row++) {
+                    if (board[row][col] === 0 && this.isValidPlacement(board, row, col, num)) {
+                        positions.push(row);
+                    }
+                }
+                
+                if (positions.length === 1) {
+                    const row = positions[0];
+                    hints.push({
+                        type: 'place',
+                        row,
+                        col,
+                        value: num,
+                        explanation: `In column ${col + 1}, the number ${num} can only go in one position.`,
+                        highlight: `${num} must go in R${row + 1}C${col + 1} - it's the only place in column ${col + 1} where it fits!`
+                    });
+                }
+            }
+        }
+
+        for (let boxRow = 0; boxRow < 3; boxRow++) {
+            for (let boxCol = 0; boxCol < 3; boxCol++) {
+                for (let num = 1; num <= 9; num++) {
+                    if (this.boxHas(board, boxRow, boxCol, num)) continue;
+                    
+                    const positions = [];
+                    for (let i = 0; i < 3; i++) {
+                        for (let j = 0; j < 3; j++) {
+                            const row = boxRow * 3 + i;
+                            const col = boxCol * 3 + j;
+                            if (board[row][col] === 0 && this.isValidPlacement(board, row, col, num)) {
+                                positions.push({ row, col });
+                            }
+                        }
+                    }
+                    
+                    if (positions.length === 1) {
+                        const { row, col } = positions[0];
+                        const boxNum = boxRow * 3 + boxCol + 1;
+                        hints.push({
+                            type: 'place',
+                            row,
+                            col,
+                            value: num,
+                            explanation: `In box ${boxNum}, the number ${num} can only go in one position.`,
+                            highlight: `${num} must go in R${row + 1}C${col + 1} - it's the only place in box ${boxNum} where it fits!`
+                        });
+                    }
+                }
+            }
+        }
+
+        return hints;
+    }
+
+    findAllPointingPairs(board, notes) {
+        const hints = [];
+
+        for (let boxRow = 0; boxRow < 3; boxRow++) {
+            for (let boxCol = 0; boxCol < 3; boxCol++) {
+                for (let num = 1; num <= 9; num++) {
+                    if (this.boxHas(board, boxRow, boxCol, num)) continue;
+
+                    const positions = [];
+                    for (let i = 0; i < 3; i++) {
+                        for (let j = 0; j < 3; j++) {
+                            const row = boxRow * 3 + i;
+                            const col = boxCol * 3 + j;
+                            if (board[row][col] === 0 && notes[row][col].has(num)) {
+                                positions.push({ row, col });
+                            }
+                        }
+                    }
+
+                    if (positions.length >= 2) {
+                        const rows = [...new Set(positions.map(p => p.row))];
+                        if (rows.length === 1) {
+                            const row = rows[0];
+                            let canEliminate = false;
+                            for (let col = 0; col < 9; col++) {
+                                const inBox = col >= boxCol * 3 && col < boxCol * 3 + 3;
+                                if (!inBox && notes[row][col].has(num)) {
+                                    canEliminate = true;
+                                }
+                            }
+                            if (canEliminate) {
+                                const boxNum = boxRow * 3 + boxCol + 1;
+                                hints.push({
+                                    type: 'eliminate',
+                                    explanation: `In box ${boxNum}, the number ${num} can only appear in row ${row + 1}.`,
+                                    highlight: `Pointing Pair: ${num} in box ${boxNum} points along row ${row + 1}.`
+                                });
+                            }
+                        }
+
+                        const cols = [...new Set(positions.map(p => p.col))];
+                        if (cols.length === 1) {
+                            const col = cols[0];
+                            let canEliminate = false;
+                            for (let row = 0; row < 9; row++) {
+                                const inBox = row >= boxRow * 3 && row < boxRow * 3 + 3;
+                                if (!inBox && notes[row][col].has(num)) {
+                                    canEliminate = true;
+                                }
+                            }
+                            if (canEliminate) {
+                                const boxNum = boxRow * 3 + boxCol + 1;
+                                hints.push({
+                                    type: 'eliminate',
+                                    explanation: `In box ${boxNum}, the number ${num} can only appear in column ${col + 1}.`,
+                                    highlight: `Pointing Pair: ${num} in box ${boxNum} points along column ${col + 1}.`
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return hints;
+    }
+
+    findAllBoxLineReductions(board, notes) {
+        const hints = [];
+
+        for (let row = 0; row < 9; row++) {
+            for (let num = 1; num <= 9; num++) {
+                if (this.rowHas(board, row, num)) continue;
+
+                const positions = [];
+                for (let col = 0; col < 9; col++) {
+                    if (board[row][col] === 0 && notes[row][col].has(num)) {
+                        positions.push({ row, col });
+                    }
+                }
+
+                if (positions.length >= 2 && positions.length <= 3) {
+                    const boxes = [...new Set(positions.map(p => Math.floor(p.col / 3)))];
+                    if (boxes.length === 1) {
+                        const boxCol = boxes[0];
+                        const boxRow = Math.floor(row / 3);
+                        
+                        let canEliminate = false;
+                        for (let i = 0; i < 3; i++) {
+                            for (let j = 0; j < 3; j++) {
+                                const r = boxRow * 3 + i;
+                                const c = boxCol * 3 + j;
+                                if (r !== row && notes[r][c].has(num)) {
+                                    canEliminate = true;
+                                }
+                            }
+                        }
+
+                        if (canEliminate) {
+                            const boxNum = boxRow * 3 + boxCol + 1;
+                            hints.push({
+                                type: 'eliminate',
+                                explanation: `In row ${row + 1}, the number ${num} can only appear within box ${boxNum}.`,
+                                highlight: `Box/Line Reduction: ${num} in row ${row + 1} is confined to box ${boxNum}.`
+                            });
+                        }
+                    }
+                }
+            }
+        }
+
+        for (let col = 0; col < 9; col++) {
+            for (let num = 1; num <= 9; num++) {
+                if (this.colHas(board, col, num)) continue;
+
+                const positions = [];
+                for (let row = 0; row < 9; row++) {
+                    if (board[row][col] === 0 && notes[row][col].has(num)) {
+                        positions.push({ row, col });
+                    }
+                }
+
+                if (positions.length >= 2 && positions.length <= 3) {
+                    const boxes = [...new Set(positions.map(p => Math.floor(p.row / 3)))];
+                    if (boxes.length === 1) {
+                        const boxRow = boxes[0];
+                        const boxCol = Math.floor(col / 3);
+                        
+                        let canEliminate = false;
+                        for (let i = 0; i < 3; i++) {
+                            for (let j = 0; j < 3; j++) {
+                                const r = boxRow * 3 + i;
+                                const c = boxCol * 3 + j;
+                                if (c !== col && notes[r][c].has(num)) {
+                                    canEliminate = true;
+                                }
+                            }
+                        }
+
+                        if (canEliminate) {
+                            const boxNum = boxRow * 3 + boxCol + 1;
+                            hints.push({
+                                type: 'eliminate',
+                                explanation: `In column ${col + 1}, the number ${num} can only appear within box ${boxNum}.`,
+                                highlight: `Box/Line Reduction: ${num} in column ${col + 1} is confined to box ${boxNum}.`
+                            });
+                        }
+                    }
+                }
+            }
+        }
+
+        return hints;
+    }
+
+    findAllNakedPairs(board, notes) {
+        const hints = [];
+
+        for (let row = 0; row < 9; row++) {
+            const cells = [];
+            for (let col = 0; col < 9; col++) {
+                if (board[row][col] === 0 && notes[row][col].size === 2) {
+                    cells.push({ col, notes: [...notes[row][col]].sort().join(',') });
+                }
+            }
+
+            for (let i = 0; i < cells.length; i++) {
+                for (let j = i + 1; j < cells.length; j++) {
+                    if (cells[i].notes === cells[j].notes) {
+                        const pair = cells[i].notes.split(',').map(Number);
+                        let canEliminate = false;
+                        
+                        for (let col = 0; col < 9; col++) {
+                            if (col !== cells[i].col && col !== cells[j].col) {
+                                if (notes[row][col].has(pair[0]) || notes[row][col].has(pair[1])) {
+                                    canEliminate = true;
+                                }
+                            }
+                        }
+
+                        if (canEliminate) {
+                            hints.push({
+                                type: 'eliminate',
+                                explanation: `Cells at columns ${cells[i].col + 1} and ${cells[j].col + 1} in row ${row + 1} both can only contain ${pair[0]} or ${pair[1]}.`,
+                                highlight: `Naked Pair: ${pair[0]} and ${pair[1]} are locked in two cells of row ${row + 1}.`
+                            });
+                        }
+                    }
+                }
+            }
+        }
+
+        for (let col = 0; col < 9; col++) {
+            const cells = [];
+            for (let row = 0; row < 9; row++) {
+                if (board[row][col] === 0 && notes[row][col].size === 2) {
+                    cells.push({ row, notes: [...notes[row][col]].sort().join(',') });
+                }
+            }
+
+            for (let i = 0; i < cells.length; i++) {
+                for (let j = i + 1; j < cells.length; j++) {
+                    if (cells[i].notes === cells[j].notes) {
+                        const pair = cells[i].notes.split(',').map(Number);
+                        let canEliminate = false;
+                        
+                        for (let row = 0; row < 9; row++) {
+                            if (row !== cells[i].row && row !== cells[j].row) {
+                                if (notes[row][col].has(pair[0]) || notes[row][col].has(pair[1])) {
+                                    canEliminate = true;
+                                }
+                            }
+                        }
+
+                        if (canEliminate) {
+                            hints.push({
+                                type: 'eliminate',
+                                explanation: `Cells at rows ${cells[i].row + 1} and ${cells[j].row + 1} in column ${col + 1} both can only contain ${pair[0]} or ${pair[1]}.`,
+                                highlight: `Naked Pair: ${pair[0]} and ${pair[1]} are locked in two cells of column ${col + 1}.`
+                            });
+                        }
+                    }
+                }
+            }
+        }
+
+        return hints;
+    }
+}
+
+
+main.js:
+import { SudokuGame } from './SudokuGame.js';
+
+// Initialize the game when DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+    window.game = new SudokuGame();
+});
+
+
+PracticeGenerator.js:
+export class PracticeGenerator {
+    constructor(puzzleGenerator) {
+        this.puzzleGenerator = puzzleGenerator;
+        
+        this.techniqueInfo = {
+            nakedSingle: {
+                name: 'Naked Single',
+                description: 'A Naked Single occurs when a cell has only one possible candidate. After eliminating all numbers that appear in the same row, column, and box, only one number remains.',
+                instructions: 'Find the cell where only one number can go. Look at the highlighted region and identify which number is missing from all related cells.'
+            },
+            hiddenSingle: {
+                name: 'Hidden Single',
+                description: 'A Hidden Single occurs when a number can only go in one cell within a row, column, or box, even though that cell might have other candidates.',
+                instructions: 'Find where a specific number can only go in one place within a row, column, or box. The number is "hidden" among other candidates.'
+            },
+            nakedPair: {
+                name: 'Naked Pair',
+                description: 'A Naked Pair occurs when two cells in the same row, column, or box contain only the same two candidates. These two numbers can be eliminated from other cells in that unit.',
+                instructions: 'Find two cells with the same two candidates. Those numbers can be removed from other cells in the same row, column, or box.'
+            },
+            hiddenPair: {
+                name: 'Hidden Pair',
+                description: 'A Hidden Pair occurs when two numbers can only appear in two cells within a row, column, or box. All other candidates can be removed from those two cells.',
+                instructions: 'Find two numbers that only appear in two cells within a unit. Remove all other candidates from those cells.'
+            },
+            pointingPair: {
+                name: 'Pointing Pair',
+                description: 'When a candidate in a box is confined to a single row or column, that candidate can be eliminated from that row or column outside the box.',
+                instructions: 'Find a number that only appears in one row or column within a box. Eliminate it from that row/column outside the box.'
+            },
+            boxLineReduction: {
+                name: 'Box/Line Reduction',
+                description: 'When a candidate in a row or column is confined to a single box, that candidate can be eliminated from other cells in that box.',
+                instructions: 'Find a number in a row/column that only appears within one box. Eliminate it from other cells in that box.'
+            },
+            nakedTriple: {
+                name: 'Naked Triple',
+                description: 'Three cells in a unit contain only three candidates (in any combination). Those three numbers can be eliminated from other cells in that unit.',
+                instructions: 'Find three cells that together contain only three different numbers. Remove those numbers from other cells in the same unit.'
+            },
+            xWing: {
+                name: 'X-Wing',
+                description: 'When a candidate appears in exactly two cells in two different rows, and those cells are in the same two columns, the candidate can be eliminated from other cells in those columns (and vice versa).',
+                instructions: 'Find a number that forms a rectangle pattern: exactly 2 cells in 2 rows, aligned in the same 2 columns. Eliminate that number from other cells in those columns.'
+            },
+            yWing: {
+                name: 'Y-Wing',
+                description: 'Three cells form a Y pattern: a pivot cell with two candidates (AB) connects to two wing cells with candidates (AC) and (BC). The candidate C can be eliminated from cells that see both wings.',
+                instructions: 'Find a pivot cell with 2 candidates that connects to two wing cells. The common candidate between the wings can be eliminated from cells seeing both wings.'
+            },
+            swordfish: {
+                name: 'Swordfish',
+                description: 'An extension of X-Wing using three rows and three columns. When a candidate appears in 2-3 cells in three rows, and all those cells are confined to the same three columns, eliminate from other cells in those columns.',
+                instructions: 'Find a number that appears in a 3x3 pattern across three rows and three columns. Eliminate it from other cells in those columns.'
+            }
+        };
+    }
+
+    getTechniqueInfo(technique) {
+        return this.techniqueInfo[technique] || null;
+    }
+
+    generatePracticePuzzle(technique) {
+        // Generate puzzles until we find one that requires the target technique
+        const maxAttempts = 50;
+        
+        for (let attempt = 0; attempt < maxAttempts; attempt++) {
+            const result = this.tryGeneratePuzzleWithTechnique(technique);
+            if (result) {
+                return result;
+            }
+        }
+        
+        // Fallback: return a pre-made puzzle for the technique
+        return this.getPresetPuzzle(technique);
+    }
+
+    tryGeneratePuzzleWithTechnique(technique) {
+        // Generate a solution
+        const solution = this.puzzleGenerator.generateSolution();
+        const puzzle = solution.map(row => [...row]);
+        
+        // Remove cells strategically based on technique
+        const cellsToRemove = this.getCellsToRemoveForTechnique(technique);
+        
+        const cells = [];
+        for (let i = 0; i < 81; i++) {
+            cells.push(i);
+        }
+        this.shuffleArray(cells);
+        
+        let removed = 0;
+        for (const cellIndex of cells) {
+            if (removed >= cellsToRemove) break;
+            
+            const row = Math.floor(cellIndex / 9);
+            const col = cellIndex % 9;
+            
+            const backup = puzzle[row][col];
+            puzzle[row][col] = 0;
+            
+            if (this.puzzleGenerator.countSolutions(puzzle.map(r => [...r])) === 1) {
+                removed++;
+            } else {
+                puzzle[row][col] = backup;
+            }
+        }
+        
+        // Now solve partially until we reach a state requiring the technique
+        const practiceState = this.solveUntilTechnique(puzzle, solution, technique);
+        
+        if (practiceState) {
+            return {
+                puzzle: practiceState.board,
+                solution: solution,
+                notes: practiceState.notes,
+                given: practiceState.given,
+                techniqueLocation: practiceState.techniqueLocation
+            };
+        }
+        
+        return null;
+    }
+
+    getCellsToRemoveForTechnique(technique) {
+        switch (technique) {
+            case 'nakedSingle':
+            case 'hiddenSingle':
+                return 40;
+            case 'nakedPair':
+            case 'hiddenPair':
+            case 'pointingPair':
+            case 'boxLineReduction':
+                return 48;
+            case 'nakedTriple':
+            case 'xWing':
+            case 'yWing':
+                return 52;
+            case 'swordfish':
+                return 55;
+            default:
+                return 45;
+        }
+    }
+
+    solveUntilTechnique(puzzle, solution, targetTechnique) {
+        const board = puzzle.map(row => [...row]);
+        const given = puzzle.map(row => row.map(cell => cell !== 0));
+        const notes = Array(9).fill(null).map(() => 
+            Array(9).fill(null).map(() => new Set())
+        );
+        
+        // Fill initial candidates
+        this.fillAllNotes(board, notes);
+        
+        const maxIterations = 100;
+        let iterations = 0;
+        
+        while (iterations < maxIterations) {
+            iterations++;
+            
+            // Check if target technique is applicable now
+            const techniqueResult = this.checkForTechnique(board, notes, targetTechnique);
+            if (techniqueResult) {
+                return {
+                    board,
+                    notes,
+                    given,
+                    techniqueLocation: techniqueResult
+                };
+            }
+            
+            // Apply simpler techniques to progress
+            let progress = false;
+            
+            // Only apply techniques simpler than the target
+            if (this.getTechniqueDifficulty(targetTechnique) > 1) {
+                const nakedSingle = this.findNakedSingle(board, notes);
+                if (nakedSingle) {
+                    board[nakedSingle.row][nakedSingle.col] = nakedSingle.value;
+                    notes[nakedSingle.row][nakedSingle.col].clear();
+                    this.removeNotesFromRelated(notes, nakedSingle.row, nakedSingle.col, nakedSingle.value);
+                    progress = true;
+                    continue;
+                }
+            }
+            
+            if (this.getTechniqueDifficulty(targetTechnique) > 2) {
+                const hiddenSingle = this.findHiddenSingle(board, notes);
+                if (hiddenSingle) {
+                    board[hiddenSingle.row][hiddenSingle.col] = hiddenSingle.value;
+                    notes[hiddenSingle.row][hiddenSingle.col].clear();
+                    this.removeNotesFromRelated(notes, hiddenSingle.row, hiddenSingle.col, hiddenSingle.value);
+                    progress = true;
+                    continue;
+                }
+            }
+            
+            if (!progress) break;
+        }
+        
+        // Check one more time if technique applies
+        const finalCheck = this.checkForTechnique(board, notes, targetTechnique);
+        if (finalCheck) {
+            return {
+                board,
+                notes,
+                given,
+                techniqueLocation: finalCheck
+            };
+        }
+        
+        return null;
+    }
+
+    getTechniqueDifficulty(technique) {
+        const difficulties = {
+            nakedSingle: 1,
+            hiddenSingle: 2,
+            nakedPair: 3,
+            hiddenPair: 4,
+            pointingPair: 5,
+            boxLineReduction: 6,
+            nakedTriple: 7,
+            xWing: 8,
+            yWing: 9,
+            swordfish: 10
+        };
+        return difficulties[technique] || 5;
+    }
+
+    checkForTechnique(board, notes, technique) {
+        switch (technique) {
+            case 'nakedSingle':
+                return this.findNakedSingle(board, notes);
+            case 'hiddenSingle':
+                return this.findHiddenSingle(board, notes);
+            case 'nakedPair':
+                return this.findNakedPair(board, notes);
+            case 'hiddenPair':
+                return this.findHiddenPair(board, notes);
+            case 'pointingPair':
+                return this.findPointingPair(board, notes);
+            case 'boxLineReduction':
+                return this.findBoxLineReduction(board, notes);
+            case 'nakedTriple':
+                return this.findNakedTriple(board, notes);
+            case 'xWing':
+                return this.findXWing(board, notes);
+            case 'yWing':
+                return this.findYWing(board, notes);
+            case 'swordfish':
+                return this.findSwordfish(board, notes);
+            default:
+                return null;
+        }
+    }
+
+    fillAllNotes(board, notes) {
+        for (let row = 0; row < 9; row++) {
+            for (let col = 0; col < 9; col++) {
+                if (board[row][col] === 0) {
+                    notes[row][col].clear();
+                    for (let num = 1; num <= 9; num++) {
+                        if (this.isValidPlacement(board, row, col, num)) {
+                            notes[row][col].add(num);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    isValidPlacement(board, row, col, num) {
+        for (let x = 0; x < 9; x++) {
+            if (board[row][x] === num) return false;
+        }
+        for (let x = 0; x < 9; x++) {
+            if (board[x][col] === num) return false;
+        }
+        const boxRow = Math.floor(row / 3) * 3;
+        const boxCol = Math.floor(col / 3) * 3;
+        for (let i = 0; i < 3; i++) {
+            for (let j = 0; j < 3; j++) {
+                if (board[boxRow + i][boxCol + j] === num) return false;
+            }
+        }
+        return true;
+    }
+
+    removeNotesFromRelated(notes, row, col, num) {
+        for (let x = 0; x < 9; x++) {
+            notes[row][x].delete(num);
+            notes[x][col].delete(num);
+        }
+        const boxRow = Math.floor(row / 3) * 3;
+        const boxCol = Math.floor(col / 3) * 3;
+        for (let i = 0; i < 3; i++) {
+            for (let j = 0; j < 3; j++) {
+                notes[boxRow + i][boxCol + j].delete(num);
+            }
+        }
+    }
+
+    shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+
+    // Technique finding methods
+    findNakedSingle(board, notes) {
+        for (let row = 0; row < 9; row++) {
+            for (let col = 0; col < 9; col++) {
+                if (board[row][col] === 0 && notes[row][col].size === 1) {
+                    return {
+                        row,
+                        col,
+                        value: [...notes[row][col]][0],
+                        cells: [{ row, col }],
+                        type: 'place'
+                    };
+                }
+            }
+        }
+        return null;
+    }
+
+    findHiddenSingle(board, notes) {
+        // Check rows
+        for (let row = 0; row < 9; row++) {
+            for (let num = 1; num <= 9; num++) {
+                const positions = [];
+                for (let col = 0; col < 9; col++) {
+                    if (board[row][col] === 0 && notes[row][col].has(num)) {
+                        positions.push({ row, col });
+                    }
+                }
+                if (positions.length === 1) {
+                    return {
+                        row: positions[0].row,
+                        col: positions[0].col,
+                        value: num,
+                        cells: positions,
+                        type: 'place',
+                        unit: 'row'
+                    };
+                }
+            }
+        }
+
+        // Check columns
+        for (let col = 0; col < 9; col++) {
+            for (let num = 1; num <= 9; num++) {
+                const positions = [];
+                for (let row = 0; row < 9; row++) {
+                    if (board[row][col] === 0 && notes[row][col].has(num)) {
+                        positions.push({ row, col });
+                    }
+                }
+                if (positions.length === 1) {
+                    return {
+                        row: positions[0].row,
+                        col: positions[0].col,
+                        value: num,
+                        cells: positions,
+                        type: 'place',
+                        unit: 'column'
+                    };
+                }
+            }
+        }
+
+        // Check boxes
+        for (let boxRow = 0; boxRow < 3; boxRow++) {
+            for (let boxCol = 0; boxCol < 3; boxCol++) {
+                for (let num = 1; num <= 9; num++) {
+                    const positions = [];
+                    for (let i = 0; i < 3; i++) {
+                        for (let j = 0; j < 3; j++) {
+                            const row = boxRow * 3 + i;
+                            const col = boxCol * 3 + j;
+                            if (board[row][col] === 0 && notes[row][col].has(num)) {
+                                positions.push({ row, col });
+                            }
+                        }
+                    }
+                    if (positions.length === 1) {
+                        return {
+                            row: positions[0].row,
+                            col: positions[0].col,
+                            value: num,
+                            cells: positions,
+                            type: 'place',
+                            unit: 'box'
+                        };
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
+    findNakedPair(board, notes) {
+        // Check rows
+        for (let row = 0; row < 9; row++) {
+            const cells = [];
+            for (let col = 0; col < 9; col++) {
+                if (board[row][col] === 0 && notes[row][col].size === 2) {
+                    cells.push({ col, notes: [...notes[row][col]].sort().join(',') });
+                }
+            }
+            for (let i = 0; i < cells.length; i++) {
+                for (let j = i + 1; j < cells.length; j++) {
+                    if (cells[i].notes === cells[j].notes) {
+                        const pair = cells[i].notes.split(',').map(Number);
+                        const eliminations = [];
+                        for (let col = 0; col < 9; col++) {
+                            if (col !== cells[i].col && col !== cells[j].col) {
+                                pair.forEach(n => {
+                                    if (notes[row][col].has(n)) {
+                                        eliminations.push({ row, col, value: n });
+                                    }
+                                });
+                            }
+                        }
+                        if (eliminations.length > 0) {
+                            return {
+                                cells: [{ row, col: cells[i].col }, { row, col: cells[j].col }],
+                                values: pair,
+                                eliminations,
+                                type: 'eliminate',
+                                unit: 'row'
+                            };
+                        }
+                    }
+                }
+            }
+        }
+
+        // Check columns
+        for (let col = 0; col < 9; col++) {
+            const cells = [];
+            for (let row = 0; row < 9; row++) {
+                if (board[row][col] === 0 && notes[row][col].size === 2) {
+                    cells.push({ row, notes: [...notes[row][col]].sort().join(',') });
+                }
+            }
+            for (let i = 0; i < cells.length; i++) {
+                for (let j = i + 1; j < cells.length; j++) {
+                    if (cells[i].notes === cells[j].notes) {
+                        const pair = cells[i].notes.split(',').map(Number);
+                        const eliminations = [];
+                        for (let row = 0; row < 9; row++) {
+                            if (row !== cells[i].row && row !== cells[j].row) {
+                                pair.forEach(n => {
+                                    if (notes[row][col].has(n)) {
+                                        eliminations.push({ row, col, value: n });
+                                    }
+                                });
+                            }
+                        }
+                        if (eliminations.length > 0) {
+                            return {
+                                cells: [{ row: cells[i].row, col }, { row: cells[j].row, col }],
+                                values: pair,
+                                eliminations,
+                                type: 'eliminate',
+                                unit: 'column'
+                            };
+                        }
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
+    findHiddenPair(board, notes) {
+        // Check rows
+        for (let row = 0; row < 9; row++) {
+            for (let n1 = 1; n1 <= 8; n1++) {
+                for (let n2 = n1 + 1; n2 <= 9; n2++) {
+                    const positions = [];
+                    for (let col = 0; col < 9; col++) {
+                        if (board[row][col] === 0 && 
+                            (notes[row][col].has(n1) || notes[row][col].has(n2))) {
+                            if (notes[row][col].has(n1) && notes[row][col].has(n2)) {
+                                positions.push(col);
+                            }
+                        }
+                    }
+                    
+                    if (positions.length === 2) {
+                        // Verify these are the only positions for both numbers
+                        let validN1 = true, validN2 = true;
+                        for (let col = 0; col < 9; col++) {
+                            if (!positions.includes(col)) {
+                                if (notes[row][col].has(n1)) validN1 = false;
+                                if (notes[row][col].has(n2)) validN2 = false;
+                            }
+                        }
+                        
+                        if (validN1 && validN2) {
+                            const eliminations = [];
+                            positions.forEach(col => {
+                                notes[row][col].forEach(n => {
+                                    if (n !== n1 && n !== n2) {
+                                        eliminations.push({ row, col, value: n });
+                                    }
+                                });
+                            });
+                            
+                            if (eliminations.length > 0) {
+                                return {
+                                    cells: positions.map(col => ({ row, col })),
+                                    values: [n1, n2],
+                                    eliminations,
+                                    type: 'eliminate',
+                                    unit: 'row'
+                                };
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
+    findPointingPair(board, notes) {
+        for (let boxRow = 0; boxRow < 3; boxRow++) {
+            for (let boxCol = 0; boxCol < 3; boxCol++) {
+                for (let num = 1; num <= 9; num++) {
+                    const positions = [];
+                    for (let i = 0; i < 3; i++) {
+                        for (let j = 0; j < 3; j++) {
+                            const row = boxRow * 3 + i;
+                            const col = boxCol * 3 + j;
+                            if (board[row][col] === 0 && notes[row][col].has(num)) {
+                                positions.push({ row, col });
+                            }
+                        }
+                    }
+
+                    if (positions.length >= 2 && positions.length <= 3) {
+                        const rows = [...new Set(positions.map(p => p.row))];
+                        if (rows.length === 1) {
+                            const row = rows[0];
+                            const eliminations = [];
+                            for (let col = 0; col < 9; col++) {
+                                const inBox = col >= boxCol * 3 && col < boxCol * 3 + 3;
+                                if (!inBox && notes[row][col].has(num)) {
+                                    eliminations.push({ row, col, value: num });
+                                }
+                            }
+                            if (eliminations.length > 0) {
+                                return {
+                                    cells: positions,
+                                    value: num,
+                                    eliminations,
+                                    type: 'eliminate',
+                                    direction: 'row'
+                                };
+                            }
+                        }
+
+                        const cols = [...new Set(positions.map(p => p.col))];
+                        if (cols.length === 1) {
+                            const col = cols[0];
+                            const eliminations = [];
+                            for (let row = 0; row < 9; row++) {
+                                const inBox = row >= boxRow * 3 && row < boxRow * 3 + 3;
+                                if (!inBox && notes[row][col].has(num)) {
+                                    eliminations.push({ row, col, value: num });
+                                }
+                            }
+                            if (eliminations.length > 0) {
+                                return {
+                                    cells: positions,
+                                    value: num,
+                                    eliminations,
+                                    type: 'eliminate',
+                                    direction: 'column'
+                                };
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    findBoxLineReduction(board, notes) {
+        // Check rows
+        for (let row = 0; row < 9; row++) {
+            for (let num = 1; num <= 9; num++) {
+                const positions = [];
+                for (let col = 0; col < 9; col++) {
+                    if (board[row][col] === 0 && notes[row][col].has(num)) {
+                        positions.push({ row, col });
+                    }
+                }
+                if (positions.length >= 2 && positions.length <= 3) {
+                    const boxes = [...new Set(positions.map(p => Math.floor(p.col / 3)))];
+                    if (boxes.length === 1) {
+                        const boxCol = boxes[0];
+                        const boxRow = Math.floor(row / 3);
+                        const eliminations = [];
+                        for (let i = 0; i < 3; i++) {
+                            for (let j = 0; j < 3; j++) {
+                                const r = boxRow * 3 + i;
+                                const c = boxCol * 3 + j;
+                                if (r !== row && notes[r][c].has(num)) {
+                                    eliminations.push({ row: r, col: c, value: num });
+                                }
+                            }
+                        }
+                        if (eliminations.length > 0) {
+                            return {
+                                cells: positions,
+                                value: num,
+                                eliminations,
+                                type: 'eliminate',
+                                unit: 'row'
+                            };
+                        }
+                    }
+                }
+            }
+        }
+
+        // Check columns
+        for (let col = 0; col < 9; col++) {
+            for (let num = 1; num <= 9; num++) {
+                const positions = [];
+                for (let row = 0; row < 9; row++) {
+                    if (board[row][col] === 0 && notes[row][col].has(num)) {
+                        positions.push({ row, col });
+                    }
+                }
+                if (positions.length >= 2 && positions.length <= 3) {
+                    const boxes = [...new Set(positions.map(p => Math.floor(p.row / 3)))];
+                    if (boxes.length === 1) {
+                        const boxRow = boxes[0];
+                        const boxCol = Math.floor(col / 3);
+                        const eliminations = [];
+                        for (let i = 0; i < 3; i++) {
+                            for (let j = 0; j < 3; j++) {
+                                const r = boxRow * 3 + i;
+                                const c = boxCol * 3 + j;
+                                if (c !== col && notes[r][c].has(num)) {
+                                    eliminations.push({ row: r, col: c, value: num });
+                                }
+                            }
+                        }
+                        if (eliminations.length > 0) {
+                            return {
+                                cells: positions,
+                                value: num,
+                                eliminations,
+                                type: 'eliminate',
+                                unit: 'column'
+                            };
+                        }
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
+    findNakedTriple(board, notes) {
+        for (let row = 0; row < 9; row++) {
+            const cells = [];
+            for (let col = 0; col < 9; col++) {
+                if (board[row][col] === 0 && notes[row][col].size >= 2 && notes[row][col].size <= 3) {
+                    cells.push({ col, notes: notes[row][col] });
+                }
+            }
+            
+            for (let i = 0; i < cells.length - 2; i++) {
+                for (let j = i + 1; j < cells.length - 1; j++) {
+                    for (let k = j + 1; k < cells.length; k++) {
+                        const union = new Set([...cells[i].notes, ...cells[j].notes, ...cells[k].notes]);
+                        if (union.size === 3) {
+                            const eliminations = [];
+                            const tripleCols = [cells[i].col, cells[j].col, cells[k].col];
+                            for (let col = 0; col < 9; col++) {
+                                if (!tripleCols.includes(col)) {
+                                    union.forEach(n => {
+                                        if (notes[row][col].has(n)) {
+                                            eliminations.push({ row, col, value: n });
+                                        }
+                                    });
+                                }
+                            }
+                            if (eliminations.length > 0) {
+                                return {
+                                    cells: tripleCols.map(col => ({ row, col })),
+                                    values: [...union],
+                                    eliminations,
+                                    type: 'eliminate'
+                                };
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
+    findXWing(board, notes) {
+        for (let num = 1; num <= 9; num++) {
+            const rowPositions = [];
+            for (let row = 0; row < 9; row++) {
+                const cols = [];
+                for (let col = 0; col < 9; col++) {
+                    if (board[row][col] === 0 && notes[row][col].has(num)) {
+                        cols.push(col);
+                    }
+                }
+                if (cols.length === 2) {
+                    rowPositions.push({ row, cols });
+                }
+            }
+
+            for (let i = 0; i < rowPositions.length - 1; i++) {
+                for (let j = i + 1; j < rowPositions.length; j++) {
+                    if (rowPositions[i].cols[0] === rowPositions[j].cols[0] &&
+                        rowPositions[i].cols[1] === rowPositions[j].cols[1]) {
+                        const eliminations = [];
+                        const col1 = rowPositions[i].cols[0];
+                        const col2 = rowPositions[i].cols[1];
+                        const row1 = rowPositions[i].row;
+                        const row2 = rowPositions[j].row;
+
+                        for (let row = 0; row < 9; row++) {
+                            if (row !== row1 && row !== row2) {
+                                if (notes[row][col1].has(num)) {
+                                    eliminations.push({ row, col: col1, value: num });
+                                }
+                                if (notes[row][col2].has(num)) {
+                                    eliminations.push({ row, col: col2, value: num });
+                                }
+                            }
+                        }
+                        if (eliminations.length > 0) {
+                            return {
+                                cells: [
+                                    { row: row1, col: col1 },
+                                    { row: row1, col: col2 },
+                                    { row: row2, col: col1 },
+                                    { row: row2, col: col2 }
+                                ],
+                                value: num,
+                                eliminations,
+                                type: 'eliminate'
+                            };
+                        }
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
+    findYWing(board, notes) {
+        const getPeers = (row, col) => {
+            const peers = [];
+            for (let c = 0; c < 9; c++) if (c !== col) peers.push({ row, col: c });
+            for (let r = 0; r < 9; r++) if (r !== row) peers.push({ row: r, col });
+            const boxRow = Math.floor(row / 3) * 3;
+            const boxCol = Math.floor(col / 3) * 3;
+            for (let i = 0; i < 3; i++) {
+                for (let j = 0; j < 3; j++) {
+                    const r = boxRow + i, c = boxCol + j;
+                    if (r !== row || c !== col) {
+                        if (!peers.some(p => p.row === r && p.col === c)) {
+                            peers.push({ row: r, col: c });
+                        }
+                    }
+                }
+            }
+            return peers;
+        };
+
+        for (let row = 0; row < 9; row++) {
+            for (let col = 0; col < 9; col++) {
+                if (board[row][col] === 0 && notes[row][col].size === 2) {
+                    const pivot = [...notes[row][col]];
+                    const [a, b] = pivot;
+                    const peers = getPeers(row, col);
+                    const wingCandidates = peers.filter(p =>
+                        board[p.row][p.col] === 0 && notes[p.row][p.col].size === 2
+                    );
+
+                    for (let i = 0; i < wingCandidates.length; i++) {
+                        for (let j = i + 1; j < wingCandidates.length; j++) {
+                            const wing1 = [...notes[wingCandidates[i].row][wingCandidates[i].col]];
+                            const wing2 = [...notes[wingCandidates[j].row][wingCandidates[j].col]];
+
+                            let c = null;
+                            if (wing1.includes(a) && !wing1.includes(b)) {
+                                c = wing1.find(n => n !== a);
+                                if (wing2.includes(b) && wing2.includes(c)) {
+                                    const eliminations = [];
+                                    const wing1Peers = getPeers(wingCandidates[i].row, wingCandidates[i].col);
+                                    const wing2Peers = getPeers(wingCandidates[j].row, wingCandidates[j].col);
+
+                                    for (const peer of wing1Peers) {
+                                        if (wing2Peers.some(p => p.row === peer.row && p.col === peer.col)) {
+                                            if (notes[peer.row][peer.col].has(c) &&
+                                                !(peer.row === row && peer.col === col) &&
+                                                !(peer.row === wingCandidates[i].row && peer.col === wingCandidates[i].col) &&
+                                                !(peer.row === wingCandidates[j].row && peer.col === wingCandidates[j].col)) {
+                                                eliminations.push({ row: peer.row, col: peer.col, value: c });
+                                            }
+                                        }
+                                    }
+                                    if (eliminations.length > 0) {
+                                        return {
+                                            cells: [
+                                                { row, col },
+                                                wingCandidates[i],
+                                                wingCandidates[j]
+                                            ],
+                                            values: [a, b, c],
+                                            eliminations,
+                                            type: 'eliminate'
+                                        };
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    findSwordfish(board, notes) {
+        for (let num = 1; num <= 9; num++) {
+            const rowPositions = [];
+            for (let row = 0; row < 9; row++) {
+                const cols = [];
+                for (let col = 0; col < 9; col++) {
+                    if (board[row][col] === 0 && notes[row][col].has(num)) {
+                        cols.push(col);
+                    }
+                }
+                if (cols.length >= 2 && cols.length <= 3) {
+                    rowPositions.push({ row, cols });
+                }
+            }
+
+            if (rowPositions.length >= 3) {
+                for (let i = 0; i < rowPositions.length - 2; i++) {
+                    for (let j = i + 1; j < rowPositions.length - 1; j++) {
+                        for (let k = j + 1; k < rowPositions.length; k++) {
+                            const allCols = new Set([
+                                ...rowPositions[i].cols,
+                                ...rowPositions[j].cols,
+                                ...rowPositions[k].cols
+                            ]);
+                            if (allCols.size === 3) {
+                                const eliminations = [];
+                                const rows = [rowPositions[i].row, rowPositions[j].row, rowPositions[k].row];
+
+                                allCols.forEach(col => {
+                                    for (let row = 0; row < 9; row++) {
+                                        if (!rows.includes(row) && notes[row][col].has(num)) {
+                                            eliminations.push({ row, col, value: num });
+                                        }
+                                    }
+                                });
+                                if (eliminations.length > 0) {
+                                    const cells = [];
+                                    rows.forEach(row => {
+                                        allCols.forEach(col => {
+                                            if (notes[row][col].has(num)) {
+                                                cells.push({ row, col });
+                                            }
+                                        });
+                                    });
+                                    return {
+                                        cells,
+                                        value: num,
+                                        eliminations,
+                                        type: 'eliminate'
+                                    };
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    getPresetPuzzle(technique) {
+        // Fallback preset puzzles for each technique
+        // These are carefully crafted to demonstrate each technique
+        const presets = {
+            nakedSingle: {
+                puzzle: [
+                    [5,3,0,0,7,0,0,0,0],
+                    [6,0,0,1,9,5,0,0,0],
+                    [0,9,8,0,0,0,0,6,0],
+                    [8,0,0,0,6,0,0,0,3],
+                    [4,0,0,8,0,3,0,0,1],
+                    [7,0,0,0,2,0,0,0,6],
+                    [0,6,0,0,0,0,2,8,0],
+                    [0,0,0,4,1,9,0,0,5],
+                    [0,0,0,0,8,0,0,7,9]
+                ],
+                solution: [
+                    [5,3,4,6,7,8,9,1,2],
+                    [6,7,2,1,9,5,3,4,8],
+                    [1,9,8,3,4,2,5,6,7],
+                    [8,5,9,7,6,1,4,2,3],
+                    [4,2,6,8,5,3,7,9,1],
+                    [7,1,3,9,2,4,8,5,6],
+                    [9,6,1,5,3,7,2,8,4],
+                    [2,8,7,4,1,9,6,3,5],
+                    [3,4,5,2,8,6,1,7,9]
+                ]
+            }
+        };
+
+        const preset = presets[technique] || presets.nakedSingle;
+        const given = preset.puzzle.map(row => row.map(cell => cell !== 0));
+        const notes = Array(9).fill(null).map(() => Array(9).fill(null).map(() => new Set()));
+        
+        // Fill notes
+        for (let row = 0; row < 9; row++) {
+            for (let col = 0; col < 9; col++) {
+                if (preset.puzzle[row][col] === 0) {
+                    for (let num = 1; num <= 9; num++) {
+                        if (this.isValidPlacement(preset.puzzle, row, col, num)) {
+                            notes[row][col].add(num);
+                        }
+                    }
+                }
+            }
+        }
+
+        return {
+            puzzle: preset.puzzle.map(row => [...row]),
+            solution: preset.solution,
+            notes,
+            given,
+            techniqueLocation: this.checkForTechnique(preset.puzzle, notes, technique)
+        };
+    }
+}
+
+
+PuzzleGenerator.js:
+export class PuzzleGenerator {
+    constructor() {
+        this.techniqueDifficulty = {
+            nakedSingle: 1,
+            hiddenSingle: 2,
+            nakedPair: 3,
+            hiddenPair: 4,
+            pointingPair: 5,
+            boxLineReduction: 6,
+            nakedTriple: 7,
+            hiddenTriple: 8,
+            xWing: 9,
+            swordfish: 10,
+            yWing: 11,
+            xyzWing: 12
+        };
+    }
+
+    generatePuzzle(difficulty) {
+        const range = this.getDifficultyRange(difficulty);
+        let attempts = 0;
+        const maxAttempts = 100;
+
+        while (attempts < maxAttempts) {
+            attempts++;
+            const solution = this.generateSolution();
+            const puzzle = solution.map(row => [...row]);
+            
+            const cellsToRemove = {
+                easy: 38,
+                medium: 46,
+                hard: 50,
+                expert: 54,
+                master: 56,
+                extreme: 58
+            };
+
+            const cells = [];
+            for (let i = 0; i < 81; i++) {
+                cells.push(i);
+            }
+            this.shuffle(cells);
+
+            let removed = 0;
+            for (const cellIndex of cells) {
+                if (removed >= cellsToRemove[difficulty]) break;
+                
+                const row = Math.floor(cellIndex / 9);
+                const col = cellIndex % 9;
+                
+                const backup = puzzle[row][col];
+                puzzle[row][col] = 0;
+                
+                if (this.countSolutions(puzzle.map(r => [...r])) === 1) {
+                    removed++;
+                } else {
+                    puzzle[row][col] = backup;
+                }
+            }
+
+            const grade = this.gradePuzzle(puzzle);
+            
+            if (grade >= range.min && grade <= range.max) {
+                return { puzzle, solution };
+            }
+        }
+
+        // Fallback
+        const solution = this.generateSolution();
+        const puzzle = solution.map(row => [...row]);
+        const cells = [];
+        for (let i = 0; i < 81; i++) cells.push(i);
+        this.shuffle(cells);
+        
+        let removed = 0;
+        const target = { easy: 38, medium: 46, hard: 50, expert: 54, master: 56, extreme: 58 }[difficulty];
+        
+        for (const cellIndex of cells) {
+            if (removed >= target) break;
+            const row = Math.floor(cellIndex / 9);
+            const col = cellIndex % 9;
+            const backup = puzzle[row][col];
+            puzzle[row][col] = 0;
+            if (this.countSolutions(puzzle.map(r => [...r])) === 1) {
+                removed++;
+            } else {
+                puzzle[row][col] = backup;
+            }
+        }
+        
+        return { puzzle, solution };
+    }
+
+    getDifficultyRange(difficulty) {
+        switch (difficulty) {
+            case 'easy': return { min: 0, max: 2 };
+            case 'medium': return { min: 3, max: 6 };
+            case 'hard': return { min: 7, max: 8 };
+            case 'expert': return { min: 9, max: 9 };
+            case 'master': return { min: 10, max: 11 };
+            case 'extreme': return { min: 12, max: 13 };
+            default: return { min: 3, max: 6 };
+        }
+    }
+
+    generateSolution() {
+        const board = Array(9).fill(null).map(() => Array(9).fill(0));
+        this.solveSudoku(board, true);
+        return board;
+    }
+
+    solveSudoku(board, randomize = false) {
+        const empty = this.findEmpty(board);
+        if (!empty) return true;
+
+        const [row, col] = empty;
+        let nums = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+        
+        if (randomize) {
+            this.shuffle(nums);
+        }
+
+        for (const num of nums) {
+            if (this.isValidPlacement(board, row, col, num)) {
+                board[row][col] = num;
+                if (this.solveSudoku(board, randomize)) {
+                    return true;
+                }
+                board[row][col] = 0;
+            }
+        }
+
+        return false;
+    }
+
+    countSolutions(board, limit = 2) {
+        const empty = this.findEmpty(board);
+        if (!empty) return 1;
+
+        const [row, col] = empty;
+        let count = 0;
+
+        for (let num = 1; num <= 9; num++) {
+            if (this.isValidPlacement(board, row, col, num)) {
+                board[row][col] = num;
+                count += this.countSolutions(board, limit);
+                board[row][col] = 0;
+                if (count >= limit) return count;
+            }
+        }
+
+        return count;
+    }
+
+    findEmpty(board) {
+        for (let row = 0; row < 9; row++) {
+            for (let col = 0; col < 9; col++) {
+                if (board[row][col] === 0) {
+                    return [row, col];
+                }
+            }
+        }
+        return null;
+    }
+
+    isValidPlacement(board, row, col, num) {
+        for (let x = 0; x < 9; x++) {
+            if (board[row][x] === num) return false;
+        }
+
+        for (let x = 0; x < 9; x++) {
+            if (board[x][col] === num) return false;
+        }
+
+        const boxRow = Math.floor(row / 3) * 3;
+        const boxCol = Math.floor(col / 3) * 3;
+        for (let i = 0; i < 3; i++) {
+            for (let j = 0; j < 3; j++) {
+                if (board[boxRow + i][boxCol + j] === num) return false;
+            }
+        }
+
+        return true;
+    }
+
+    shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+
+    gradePuzzle(puzzle) {
+        const testBoard = puzzle.map(row => [...row]);
+        const testNotes = Array(9).fill(null).map(() => 
+            Array(9).fill(null).map(() => new Set())
+        );
+
+        for (let row = 0; row < 9; row++) {
+            for (let col = 0; col < 9; col++) {
+                if (testBoard[row][col] === 0) {
+                    for (let num = 1; num <= 9; num++) {
+                        if (this.isValidPlacement(testBoard, row, col, num)) {
+                            testNotes[row][col].add(num);
+                        }
+                    }
+                }
+            }
+        }
+
+        let maxDifficulty = 0;
+        let iterations = 0;
+        const maxIterations = 200;
+
+        while (iterations < maxIterations) {
+            iterations++;
+            let progress = false;
+
+            const nakedSingle = this.findNakedSingleForGrading(testBoard, testNotes);
+            if (nakedSingle) {
+                testBoard[nakedSingle.row][nakedSingle.col] = nakedSingle.value;
+                testNotes[nakedSingle.row][nakedSingle.col].clear();
+                this.removeNotesFromRelatedForGrading(testNotes, nakedSingle.row, nakedSingle.col, nakedSingle.value);
+                maxDifficulty = Math.max(maxDifficulty, this.techniqueDifficulty.nakedSingle);
+                progress = true;
+                continue;
+            }
+
+            const hiddenSingle = this.findHiddenSingleForGrading(testBoard, testNotes);
+            if (hiddenSingle) {
+                testBoard[hiddenSingle.row][hiddenSingle.col] = hiddenSingle.value;
+                testNotes[hiddenSingle.row][hiddenSingle.col].clear();
+                this.removeNotesFromRelatedForGrading(testNotes, hiddenSingle.row, hiddenSingle.col, hiddenSingle.value);
+                maxDifficulty = Math.max(maxDifficulty, this.techniqueDifficulty.hiddenSingle);
+                progress = true;
+                continue;
+            }
+
+            const nakedPair = this.findNakedPairForGrading(testNotes);
+            if (nakedPair) {
+                nakedPair.eliminations.forEach(e => testNotes[e.row][e.col].delete(e.value));
+                maxDifficulty = Math.max(maxDifficulty, this.techniqueDifficulty.nakedPair);
+                progress = true;
+                continue;
+            }
+
+            const pointingPair = this.findPointingPairForGrading(testBoard, testNotes);
+            if (pointingPair) {
+                pointingPair.eliminations.forEach(e => testNotes[e.row][e.col].delete(e.value));
+                maxDifficulty = Math.max(maxDifficulty, this.techniqueDifficulty.pointingPair);
+                progress = true;
+                continue;
+            }
+
+            const boxLine = this.findBoxLineReductionForGrading(testBoard, testNotes);
+            if (boxLine) {
+                boxLine.eliminations.forEach(e => testNotes[e.row][e.col].delete(e.value));
+                maxDifficulty = Math.max(maxDifficulty, this.techniqueDifficulty.boxLineReduction);
+                progress = true;
+                continue;
+            }
+
+            const nakedTriple = this.findNakedTripleForGrading(testBoard, testNotes);
+            if (nakedTriple) {
+                nakedTriple.eliminations.forEach(e => testNotes[e.row][e.col].delete(e.value));
+                maxDifficulty = Math.max(maxDifficulty, this.techniqueDifficulty.nakedTriple);
+                progress = true;
+                continue;
+            }
+
+            const xWing = this.findXWingForGrading(testBoard, testNotes);
+            if (xWing) {
+                xWing.eliminations.forEach(e => testNotes[e.row][e.col].delete(e.value));
+                maxDifficulty = Math.max(maxDifficulty, this.techniqueDifficulty.xWing);
+                progress = true;
+                continue;
+            }
+
+            const yWing = this.findYWingForGrading(testBoard, testNotes);
+            if (yWing) {
+                yWing.eliminations.forEach(e => testNotes[e.row][e.col].delete(e.value));
+                maxDifficulty = Math.max(maxDifficulty, this.techniqueDifficulty.yWing);
+                progress = true;
+                continue;
+            }
+
+            const swordfish = this.findSwordfishForGrading(testBoard, testNotes);
+            if (swordfish) {
+                swordfish.eliminations.forEach(e => testNotes[e.row][e.col].delete(e.value));
+                maxDifficulty = Math.max(maxDifficulty, this.techniqueDifficulty.swordfish);
+                progress = true;
+                continue;
+            }
+
+            if (!progress) break;
+        }
+
+        let solved = true;
+        for (let row = 0; row < 9; row++) {
+            for (let col = 0; col < 9; col++) {
+                if (testBoard[row][col] === 0) {
+                    solved = false;
+                    break;
+                }
+            }
+            if (!solved) break;
+        }
+
+        if (!solved) {
+            maxDifficulty = 13;
+        }
+
+        return maxDifficulty;
+    }
+
+    removeNotesFromRelatedForGrading(notes, row, col, num) {
+        for (let x = 0; x < 9; x++) {
+            notes[row][x].delete(num);
+            notes[x][col].delete(num);
+        }
+        const boxRow = Math.floor(row / 3) * 3;
+        const boxCol = Math.floor(col / 3) * 3;
+        for (let i = 0; i < 3; i++) {
+            for (let j = 0; j < 3; j++) {
+                notes[boxRow + i][boxCol + j].delete(num);
+            }
+        }
+    }
+
+    findNakedSingleForGrading(board, notes) {
+        for (let row = 0; row < 9; row++) {
+            for (let col = 0; col < 9; col++) {
+                if (board[row][col] === 0 && notes[row][col].size === 1) {
+                    return { row, col, value: [...notes[row][col]][0] };
+                }
+            }
+        }
+        return null;
+    }
+
+    findHiddenSingleForGrading(board, notes) {
+        for (let row = 0; row < 9; row++) {
+            for (let num = 1; num <= 9; num++) {
+                let positions = [];
+                for (let col = 0; col < 9; col++) {
+                    if (board[row][col] === 0 && notes[row][col].has(num)) {
+                        positions.push(col);
+                    }
+                }
+                if (positions.length === 1) {
+                    return { row, col: positions[0], value: num };
+                }
+            }
+        }
+
+        for (let col = 0; col < 9; col++) {
+            for (let num = 1; num <= 9; num++) {
+                let positions = [];
+                for (let row = 0; row < 9; row++) {
+                    if (board[row][col] === 0 && notes[row][col].has(num)) {
+                        positions.push(row);
+                    }
+                }
+                if (positions.length === 1) {
+                    return { row: positions[0], col, value: num };
+                }
+            }
+        }
+
+        for (let boxRow = 0; boxRow < 3; boxRow++) {
+            for (let boxCol = 0; boxCol < 3; boxCol++) {
+                for (let num = 1; num <= 9; num++) {
+                    let positions = [];
+                    for (let i = 0; i < 3; i++) {
+                        for (let j = 0; j < 3; j++) {
+                            const row = boxRow * 3 + i;
+                            const col = boxCol * 3 + j;
+                            if (board[row][col] === 0 && notes[row][col].has(num)) {
+                                positions.push({ row, col });
+                            }
+                        }
+                    }
+                    if (positions.length === 1) {
+                        return { row: positions[0].row, col: positions[0].col, value: num };
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
+    findNakedPairForGrading(notes) {
+        for (let row = 0; row < 9; row++) {
+            const cells = [];
+            for (let col = 0; col < 9; col++) {
+                if (notes[row][col].size === 2) {
+                    cells.push({ col, noteStr: [...notes[row][col]].sort().join(',') });
+                }
+            }
+            for (let i = 0; i < cells.length; i++) {
+                for (let j = i + 1; j < cells.length; j++) {
+                    if (cells[i].noteStr === cells[j].noteStr) {
+                        const pair = cells[i].noteStr.split(',').map(Number);
+                        const eliminations = [];
+                        for (let col = 0; col < 9; col++) {
+                            if (col !== cells[i].col && col !== cells[j].col) {
+                                pair.forEach(n => {
+                                    if (notes[row][col].has(n)) {
+                                        eliminations.push({ row, col, value: n });
+                                    }
+                                });
+                            }
+                        }
+                        if (eliminations.length > 0) return { eliminations };
+                    }
+                }
+            }
+        }
+
+        for (let col = 0; col < 9; col++) {
+            const cells = [];
+            for (let row = 0; row < 9; row++) {
+                if (notes[row][col].size === 2) {
+                    cells.push({ row, noteStr: [...notes[row][col]].sort().join(',') });
+                }
+            }
+            for (let i = 0; i < cells.length; i++) {
+                for (let j = i + 1; j < cells.length; j++) {
+                    if (cells[i].noteStr === cells[j].noteStr) {
+                        const pair = cells[i].noteStr.split(',').map(Number);
+                        const eliminations = [];
+                        for (let row = 0; row < 9; row++) {
+                            if (row !== cells[i].row && row !== cells[j].row) {
+                                pair.forEach(n => {
+                                    if (notes[row][col].has(n)) {
+                                        eliminations.push({ row, col, value: n });
+                                    }
+                                });
+                            }
+                        }
+                        if (eliminations.length > 0) return { eliminations };
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
+    findPointingPairForGrading(board, notes) {
+        for (let boxRow = 0; boxRow < 3; boxRow++) {
+            for (let boxCol = 0; boxCol < 3; boxCol++) {
+                for (let num = 1; num <= 9; num++) {
+                    const positions = [];
+                    for (let i = 0; i < 3; i++) {
+                        for (let j = 0; j < 3; j++) {
+                            const row = boxRow * 3 + i;
+                            const col = boxCol * 3 + j;
+                            if (board[row][col] === 0 && notes[row][col].has(num)) {
+                                positions.push({ row, col });
+                            }
+                        }
+                    }
+
+                    if (positions.length >= 2 && positions.length <= 3) {
+                        const rows = [...new Set(positions.map(p => p.row))];
+                        if (rows.length === 1) {
+                            const row = rows[0];
+                            const eliminations = [];
+                            for (let col = 0; col < 9; col++) {
+                                const inBox = col >= boxCol * 3 && col < boxCol * 3 + 3;
+                                if (!inBox && notes[row][col].has(num)) {
+                                    eliminations.push({ row, col, value: num });
+                                }
+                            }
+                            if (eliminations.length > 0) return { eliminations };
+                        }
+
+                        const cols = [...new Set(positions.map(p => p.col))];
+                        if (cols.length === 1) {
+                            const col = cols[0];
+                            const eliminations = [];
+                            for (let row = 0; row < 9; row++) {
+                                const inBox = row >= boxRow * 3 && row < boxRow * 3 + 3;
+                                if (!inBox && notes[row][col].has(num)) {
+                                    eliminations.push({ row, col, value: num });
+                                }
+                            }
+                            if (eliminations.length > 0) return { eliminations };
+                        }
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    findBoxLineReductionForGrading(board, notes) {
+        for (let row = 0; row < 9; row++) {
+            for (let num = 1; num <= 9; num++) {
+                const positions = [];
+                for (let col = 0; col < 9; col++) {
+                    if (board[row][col] === 0 && notes[row][col].has(num)) {
+                        positions.push({ row, col });
+                    }
+                }
+                if (positions.length >= 2 && positions.length <= 3) {
+                    const boxes = [...new Set(positions.map(p => Math.floor(p.col / 3)))];
+                    if (boxes.length === 1) {
+                        const boxCol = boxes[0];
+                        const boxRow = Math.floor(row / 3);
+                        const eliminations = [];
+                        for (let i = 0; i < 3; i++) {
+                            for (let j = 0; j < 3; j++) {
+                                const r = boxRow * 3 + i;
+                                const c = boxCol * 3 + j;
+                                if (r !== row && notes[r][c].has(num)) {
+                                    eliminations.push({ row: r, col: c, value: num });
+                                }
+                            }
+                        }
+                        if (eliminations.length > 0) return { eliminations };
+                    }
+                }
+            }
+        }
+
+        for (let col = 0; col < 9; col++) {
+            for (let num = 1; num <= 9; num++) {
+                const positions = [];
+                for (let row = 0; row < 9; row++) {
+                    if (board[row][col] === 0 && notes[row][col].has(num)) {
+                        positions.push({ row, col });
+                    }
+                }
+                if (positions.length >= 2 && positions.length <= 3) {
+                    const boxes = [...new Set(positions.map(p => Math.floor(p.row / 3)))];
+                    if (boxes.length === 1) {
+                        const boxRow = boxes[0];
+                        const boxCol = Math.floor(col / 3);
+                        const eliminations = [];
+                        for (let i = 0; i < 3; i++) {
+                            for (let j = 0; j < 3; j++) {
+                                const r = boxRow * 3 + i;
+                                const c = boxCol * 3 + j;
+                                if (c !== col && notes[r][c].has(num)) {
+                                    eliminations.push({ row: r, col: c, value: num });
+                                }
+                            }
+                        }
+                        if (eliminations.length > 0) return { eliminations };
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
+    findNakedTripleForGrading(board, notes) {
+        for (let row = 0; row < 9; row++) {
+            const cells = [];
+            for (let col = 0; col < 9; col++) {
+                if (board[row][col] === 0 && notes[row][col].size >= 2 && notes[row][col].size <= 3) {
+                    cells.push({ col, notes: notes[row][col] });
+                }
+            }
+            
+            for (let i = 0; i < cells.length - 2; i++) {
+                for (let j = i + 1; j < cells.length - 1; j++) {
+                    for (let k = j + 1; k < cells.length; k++) {
+                        const union = new Set([...cells[i].notes, ...cells[j].notes, ...cells[k].notes]);
+                        if (union.size === 3) {
+                            const eliminations = [];
+                            const tripleCols = [cells[i].col, cells[j].col, cells[k].col];
+                            for (let col = 0; col < 9; col++) {
+                                if (!tripleCols.includes(col)) {
+                                    union.forEach(n => {
+                                        if (notes[row][col].has(n)) {
+                                            eliminations.push({ row, col, value: n });
+                                        }
+                                    });
+                                }
+                            }
+                            if (eliminations.length > 0) return { eliminations };
+                        }
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
+    findXWingForGrading(board, notes) {
+        for (let num = 1; num <= 9; num++) {
+            const rowPositions = [];
+            for (let row = 0; row < 9; row++) {
+                const cols = [];
+                for (let col = 0; col < 9; col++) {
+                    if (board[row][col] === 0 && notes[row][col].has(num)) {
+                        cols.push(col);
+                    }
+                }
+                if (cols.length === 2) {
+                    rowPositions.push({ row, cols });
+                }
+            }
+
+            for (let i = 0; i < rowPositions.length - 1; i++) {
+                for (let j = i + 1; j < rowPositions.length; j++) {
+                    if (rowPositions[i].cols[0] === rowPositions[j].cols[0] &&
+                        rowPositions[i].cols[1] === rowPositions[j].cols[1]) {
+                        const eliminations = [];
+                        const col1 = rowPositions[i].cols[0];
+                        const col2 = rowPositions[i].cols[1];
+                        const row1 = rowPositions[i].row;
+                        const row2 = rowPositions[j].row;
+
+                        for (let row = 0; row < 9; row++) {
+                            if (row !== row1 && row !== row2) {
+                                if (notes[row][col1].has(num)) {
+                                    eliminations.push({ row, col: col1, value: num });
+                                }
+                                if (notes[row][col2].has(num)) {
+                                    eliminations.push({ row, col: col2, value: num });
+                                }
+                            }
+                        }
+                        if (eliminations.length > 0) return { eliminations };
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
+    findYWingForGrading(board, notes) {
+        for (let row = 0; row < 9; row++) {
+            for (let col = 0; col < 9; col++) {
+                if (board[row][col] === 0 && notes[row][col].size === 2) {
+                    const pivot = [...notes[row][col]];
+                    const [a, b] = pivot;
+
+                    const peers = this.getPeers(row, col);
+                    const wingCandidates = peers.filter(p => 
+                        board[p.row][p.col] === 0 && 
+                        notes[p.row][p.col].size === 2
+                    );
+
+                    for (let i = 0; i < wingCandidates.length - 1; i++) {
+                        for (let j = i + 1; j < wingCandidates.length; j++) {
+                            const wing1 = [...notes[wingCandidates[i].row][wingCandidates[i].col]];
+                            const wing2 = [...notes[wingCandidates[j].row][wingCandidates[j].col]];
+
+                            let c = null;
+                            if (wing1.includes(a) && !wing1.includes(b)) {
+                                c = wing1.find(n => n !== a);
+                                if (wing2.includes(b) && wing2.includes(c)) {
+                                    const eliminations = this.getYWingEliminations(
+                                        row, col, wingCandidates[i], wingCandidates[j], c, notes
+                                    );
+                                    if (eliminations.length > 0) return { eliminations };
+                                }
+                            }
+                            if (wing1.includes(b) && !wing1.includes(a)) {
+                                c = wing1.find(n => n !== b);
+                                if (wing2.includes(a) && wing2.includes(c)) {
+                                    const eliminations = this.getYWingEliminations(
+                                        row, col, wingCandidates[i], wingCandidates[j], c, notes
+                                    );
+                                    if (eliminations.length > 0) return { eliminations };
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    getYWingEliminations(pivotRow, pivotCol, wing1, wing2, c, notes) {
+        const eliminations = [];
+        const wing1Peers = this.getPeers(wing1.row, wing1.col);
+        const wing2Peers = this.getPeers(wing2.row, wing2.col);
+        
+        for (const peer of wing1Peers) {
+            if (wing2Peers.some(p => p.row === peer.row && p.col === peer.col)) {
+                if (notes[peer.row][peer.col].has(c) &&
+                    !(peer.row === pivotRow && peer.col === pivotCol) &&
+                    !(peer.row === wing1.row && peer.col === wing1.col) &&
+                    !(peer.row === wing2.row && peer.col === wing2.col)) {
+                    eliminations.push({ row: peer.row, col: peer.col, value: c });
+                }
+            }
+        }
+        return eliminations;
+    }
+
+    findSwordfishForGrading(board, notes) {
+        for (let num = 1; num <= 9; num++) {
+            const rowPositions = [];
+            for (let row = 0; row < 9; row++) {
+                const cols = [];
+                for (let col = 0; col < 9; col++) {
+                    if (board[row][col] === 0 && notes[row][col].has(num)) {
+                        cols.push(col);
+                    }
+                }
+                if (cols.length >= 2 && cols.length <= 3) {
+                    rowPositions.push({ row, cols });
+                }
+            }
+
+            if (rowPositions.length >= 3) {
+                for (let i = 0; i < rowPositions.length - 2; i++) {
+                    for (let j = i + 1; j < rowPositions.length - 1; j++) {
+                        for (let k = j + 1; k < rowPositions.length; k++) {
+                            const allCols = new Set([
+                                ...rowPositions[i].cols,
+                                ...rowPositions[j].cols,
+                                ...rowPositions[k].cols
+                            ]);
+                            if (allCols.size === 3) {
+                                const eliminations = [];
+                                const rows = [rowPositions[i].row, rowPositions[j].row, rowPositions[k].row];
+                                
+                                allCols.forEach(col => {
+                                    for (let row = 0; row < 9; row++) {
+                                        if (!rows.includes(row) && notes[row][col].has(num)) {
+                                            eliminations.push({ row, col, value: num });
+                                        }
+                                    }
+                                });
+                                if (eliminations.length > 0) return { eliminations };
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    getPeers(row, col) {
+        const peers = [];
+        const seen = new Set();
+        
+        for (let c = 0; c < 9; c++) {
+            if (c !== col) {
+                const key = `${row},${c}`;
+                if (!seen.has(key)) {
+                    peers.push({ row, col: c });
+                    seen.add(key);
+                }
+            }
+        }
+        
+        for (let r = 0; r < 9; r++) {
+            if (r !== row) {
+                const key = `${r},${col}`;
+                if (!seen.has(key)) {
+                    peers.push({ row: r, col });
+                    seen.add(key);
+                }
+            }
+        }
+        
+        const boxRow = Math.floor(row / 3) * 3;
+        const boxCol = Math.floor(col / 3) * 3;
+        for (let i = 0; i < 3; i++) {
+            for (let j = 0; j < 3; j++) {
+                const r = boxRow + i;
+                const c = boxCol + j;
+                if (r !== row || c !== col) {
+                    const key = `${r},${c}`;
+                    if (!seen.has(key)) {
+                        peers.push({ row: r, col: c });
+                        seen.add(key);
+                    }
+                }
+            }
+        }
+        
+        return peers;
+    }
+}
+
+
+SudokuGame.js:
+import { PuzzleGenerator } from './PuzzleGenerator.js';
+import { HintFinder } from './HintFinder.js';
+import { Animations } from './Animations.js';
+
+export class SudokuGame {
+    constructor() {
+        this.board = [];
+        this.solution = [];
+        this.notes = [];
+        this.given = [];
+        this.selectedCell = null;
+        this.notesMode = false;
+        this.hintsRemaining = 3;
+        this.mistakes = 0;
+        this.timer = 0;
+        this.timerInterval = null;
+        this.isPaused = false;
+        this.history = [];
+        this.difficulty = 'medium';
+        this.hoveredNumber = null;
+        this.currentHint = null;
+
+        this.theoryMode = false;
+        this.theorySavedState = null;
+
+        this.autoCheck = true;
+        this.revealedErrors = new Set();
+
+        this.completedRows = new Set();
+        this.completedCols = new Set();
+        this.completedBoxes = new Set();
+        this.completedNumbers = new Set();
+
+        this.puzzleGenerator = new PuzzleGenerator();
+        this.hintFinder = new HintFinder(this);
+        this.animations = new Animations(this);
+
+        this.init();
+    }
+
+    init() {
+        this.setupEventListeners();
+        this.startNewGame('medium');
+    }
+
+    startNewGame(difficulty) {
+        if (this.theoryMode) {
+            this.revertTheoryBoard();
+        }
+
+        this.difficulty = difficulty;
+        this.showLoading(true);
+
+        setTimeout(() => {
+            const { puzzle, solution } = this.puzzleGenerator.generatePuzzle(difficulty);
+            
+            this.solution = solution;
+            this.board = puzzle.map(row => [...row]);
+            this.given = puzzle.map(row => row.map(cell => cell !== 0));
+            this.notes = Array(9).fill(null).map(() => 
+                Array(9).fill(null).map(() => new Set())
+            );
+            
+            this.selectedCell = null;
+            this.notesMode = false;
+            this.hintsRemaining = 3;
+            this.mistakes = 0;
+            this.timer = 0;
+            this.history = [];
+            this.isPaused = false;
+            this.currentHint = null;
+            this.theoryMode = false;
+            this.theorySavedState = null;
+            this.revealedErrors = new Set();
+            this.completedRows = new Set();
+            this.completedCols = new Set();
+            this.completedBoxes = new Set();
+            this.completedNumbers = new Set();
+
+            document.getElementById('mistakes').textContent = '0';
+            document.getElementById('hintsRemaining').textContent = '3';
+            document.getElementById('hintBtn').textContent = '💡 Hint (3)';
+            document.getElementById('notesBtn').textContent = '✏️ Notes OFF';
+            document.getElementById('notesBtn').classList.remove('notes-active');
+
+            this.updateDifficultyButtons();
+            this.updateTheoryModeUI();
+            this.render();
+            this.startTimer();
+            this.showLoading(false);
+        }, 50);
+    }
+
+    showLoading(show) {
+        const board = document.getElementById('board');
+        if (show) {
+            board.innerHTML = '<div class="loading"><div class="spinner"></div><br>Generating puzzle...</div>';
+            board.style.display = 'flex';
+            board.style.alignItems = 'center';
+            board.style.justifyContent = 'center';
+            board.style.width = '468px';
+            board.style.height = '468px';
+        } else {
+            board.style.display = 'grid';
+            board.style.width = 'auto';
+            board.style.height = 'auto';
+        }
+    }
+
+    saveState() {
+        this.history.push({
+            board: this.board.map(row => [...row]),
+            notes: this.notes.map(row => row.map(cell => new Set(cell)))
+        });
+    }
+
+    undo() {
+        if (this.history.length === 0 || this.isPaused) return;
+        
+        const state = this.history.pop();
+        this.board = state.board;
+        this.notes = state.notes;
+        this.render();
+    }
+
+    isValidPlacement(board, row, col, num) {
+        for (let x = 0; x < 9; x++) {
+            if (board[row][x] === num) return false;
+        }
+
+        for (let x = 0; x < 9; x++) {
+            if (board[x][col] === num) return false;
+        }
+
+        const boxRow = Math.floor(row / 3) * 3;
+        const boxCol = Math.floor(col / 3) * 3;
+        for (let i = 0; i < 3; i++) {
+            for (let j = 0; j < 3; j++) {
+                if (board[boxRow + i][boxCol + j] === num) return false;
+            }
+        }
+
+        return true;
+    }
+
+    // Theory Mode
+    enterTheoryMode() {
+        if (this.theoryMode || this.isPaused) return;
+
+        this.theorySavedState = {
+            board: this.board.map(row => [...row]),
+            notes: this.notes.map(row => row.map(cell => new Set(cell))),
+            mistakes: this.mistakes,
+            history: this.history.map(h => ({
+                board: h.board.map(row => [...row]),
+                notes: h.notes.map(row => row.map(cell => new Set(cell)))
+            }))
+        };
+
+        this.theoryMode = true;
+        this.history = [];
+
+        this.updateTheoryModeUI();
+        this.render();
+    }
+
+    exitTheoryMode(apply) {
+        if (!this.theoryMode) return;
+
+        if (apply) {
+            this.showApplyConfirmation();
+        } else {
+            this.revertTheoryBoard();
+        }
+    }
+
+    showApplyConfirmation() {
+        const changes = this.getTheoryChanges();
+        const summaryEl = document.getElementById('changesSummary');
+        
+        if (changes.numbersPlaced === 0 && changes.notesChanged === 0) {
+            summaryEl.innerHTML = '<p>No changes were made in Theory Mode.</p>';
+        } else {
+            let html = '<ul>';
+            if (changes.numbersPlaced > 0) {
+                html += `<li><strong>${changes.numbersPlaced}</strong> number(s) placed</li>`;
+            }
+            if (changes.notesChanged > 0) {
+                html += `<li><strong>${changes.notesChanged}</strong> cell(s) with note changes</li>`;
+            }
+            html += '</ul>';
+            summaryEl.innerHTML = html;
+        }
+
+        document.getElementById('confirmApplyModal').style.display = 'flex';
+    }
+
+    getTheoryChanges() {
+        const changes = {
+            numbersPlaced: 0,
+            notesChanged: 0,
+            placedCells: []
+        };
+
+        for (let row = 0; row < 9; row++) {
+            for (let col = 0; col < 9; col++) {
+                if (this.given[row][col]) continue;
+
+                const savedValue = this.theorySavedState.board[row][col];
+                const currentValue = this.board[row][col];
+
+                if (currentValue !== 0 && currentValue !== savedValue) {
+                    changes.numbersPlaced++;
+                    changes.placedCells.push({ row, col, value: currentValue });
+                }
+
+                const savedNotes = this.theorySavedState.notes[row][col];
+                const currentNotes = this.notes[row][col];
+                if (savedNotes.size !== currentNotes.size || 
+                    ![...savedNotes].every(n => currentNotes.has(n))) {
+                    changes.notesChanged++;
+                }
+            }
+        }
+
+        return changes;
+    }
+
+    confirmApplyTheoryBoard() {
+        const changes = this.getTheoryChanges();
+        
+        let newMistakes = 0;
+        for (const cell of changes.placedCells) {
+            if (cell.value !== this.solution[cell.row][cell.col]) {
+                newMistakes++;
+            }
+        }
+        
+        this.mistakes = this.theorySavedState.mistakes + newMistakes;
+        document.getElementById('mistakes').textContent = this.mistakes;
+
+        this.theoryMode = false;
+        this.theorySavedState = null;
+        this.history = [];
+
+        document.getElementById('confirmApplyModal').style.display = 'none';
+        this.updateTheoryModeUI();
+        this.render();
+
+        if (this.checkWin()) {
+            this.showWinModal();
+        }
+    }
+
+    revertTheoryBoard() {
+        if (!this.theorySavedState) return;
+
+        this.board = this.theorySavedState.board;
+        this.notes = this.theorySavedState.notes;
+        this.mistakes = this.theorySavedState.mistakes;
+        this.history = this.theorySavedState.history || [];
+
+        this.theoryMode = false;
+        this.theorySavedState = null;
+
+        document.getElementById('mistakes').textContent = this.mistakes;
+        this.updateTheoryModeUI();
+        this.render();
+    }
+
+    updateTheoryModeUI() {
+        const banner = document.getElementById('theoryBanner');
+        const enterBtn = document.getElementById('enterTheoryBtn');
+        const applyBtn = document.getElementById('applyTheoryBtn');
+        const revertBtn = document.getElementById('revertTheoryBtn');
+
+        if (this.theoryMode) {
+            document.body.classList.add('theory-mode');
+            banner.classList.add('active');
+            enterBtn.disabled = true;
+            enterBtn.textContent = '🧪 In Theory Mode';
+            applyBtn.disabled = false;
+            revertBtn.disabled = false;
+        } else {
+            document.body.classList.remove('theory-mode');
+            banner.classList.remove('active');
+            enterBtn.disabled = false;
+            enterBtn.textContent = '🧪 Enter Theory Mode';
+            applyBtn.disabled = true;
+            revertBtn.disabled = true;
+        }
+    }
+
+    // Timer
+    startTimer() {
+        if (this.timerInterval) {
+            clearInterval(this.timerInterval);
+        }
+        this.timerInterval = setInterval(() => {
+            if (!this.isPaused) {
+                this.timer++;
+                this.updateTimerDisplay();
+            }
+        }, 1000);
+    }
+
+    updateTimerDisplay() {
+        const mins = Math.floor(this.timer / 60).toString().padStart(2, '0');
+        const secs = (this.timer % 60).toString().padStart(2, '0');
+        document.getElementById('timer').textContent = `${mins}:${secs}`;
+    }
+
+    togglePause() {
+        this.isPaused = !this.isPaused;
+        document.getElementById('pauseBtn').textContent = this.isPaused ? '▶️' : '⏸️';
+        document.getElementById('pauseOverlay').style.display = this.isPaused ? 'flex' : 'none';
+    }
+
+    // Number tracking
+    isNumberCompleted(num) {
+        let count = 0;
+        for (let row = 0; row < 9; row++) {
+            for (let col = 0; col < 9; col++) {
+                if (this.board[row][col] === num && this.board[row][col] === this.solution[row][col]) {
+                    count++;
+                }
+            }
+        }
+        return count >= 9;
+    }
+
+    getCorrectNumberCount(num) {
+        let count = 0;
+        for (let row = 0; row < 9; row++) {
+            for (let col = 0; col < 9; col++) {
+                if (this.board[row][col] === num && this.board[row][col] === this.solution[row][col]) {
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+
+    // Cell selection and input
+    selectCell(row, col) {
+        if (this.isPaused) return;
+        this.selectedCell = { row, col };
+        this.render();
+    }
+
+    inputNumber(num) {
+        if (!this.selectedCell || this.isPaused) return;
+        
+        const { row, col } = this.selectedCell;
+        if (this.given[row][col]) return;
+
+        const currentValue = this.board[row][col];
+
+        if (currentValue === num && currentValue !== this.solution[row][col]) {
+            this.saveState();
+            this.board[row][col] = 0;
+            this.render();
+            return;
+        }
+
+        if (currentValue !== 0 && currentValue === this.solution[row][col]) {
+            return;
+        }
+
+        if (this.isNumberCompleted(num)) {
+            return;
+        }
+
+        this.saveState();
+
+        if (this.notesMode) {
+            if (this.board[row][col] === 0) {
+                if (this.notes[row][col].has(num)) {
+                    this.notes[row][col].delete(num);
+                } else {
+                    this.notes[row][col].add(num);
+                }
+            }
+        } else {
+            if (this.autoCheck && !this.theoryMode) {
+                if (num !== this.solution[row][col]) {
+                    this.mistakes++;
+                    document.getElementById('mistakes').textContent = this.mistakes;
+                }
+            }
+            
+            this.board[row][col] = num;
+            this.notes[row][col].clear();
+            this.removeNotesFromRelated(row, col, num);
+            
+            this.checkAndAnimateCompletions(row, col, num);
+            
+            if (!this.theoryMode && this.checkWin()) {
+                this.animations.animateGameComplete(row, col);
+                setTimeout(() => this.showWinModal(), 1500);
+                return;
+            }
+        }
+
+        this.render();
+    }
+
+    eraseCell() {
+        if (!this.selectedCell || this.isPaused) return;
+        
+        const { row, col } = this.selectedCell;
+        if (this.given[row][col]) return;
+
+        const currentValue = this.board[row][col];
+
+        if (currentValue !== 0 && currentValue === this.solution[row][col]) {
+            return;
+        }
+
+        this.saveState();
+        this.board[row][col] = 0;
+        this.notes[row][col].clear();
+        this.render();
+    }
+
+    removeNotesFromRelated(row, col, num) {
+        for (let x = 0; x < 9; x++) {
+            this.notes[row][x].delete(num);
+        }
+
+        for (let x = 0; x < 9; x++) {
+            this.notes[x][col].delete(num);
+        }
+
+        const boxRow = Math.floor(row / 3) * 3;
+        const boxCol = Math.floor(col / 3) * 3;
+        for (let i = 0; i < 3; i++) {
+            for (let j = 0; j < 3; j++) {
+                this.notes[boxRow + i][boxCol + j].delete(num);
+            }
+        }
+    }
+
+    toggleNotes() {
+        this.notesMode = !this.notesMode;
+        document.getElementById('notesBtn').textContent = `✏️ Notes ${this.notesMode ? 'ON' : 'OFF'}`;
+        document.getElementById('notesBtn').classList.toggle('notes-active', this.notesMode);
+    }
+
+    // Auto notes - fills based on CURRENT board state, not solution
+    autoFillNotes() {
+        this.saveState();
+        for (let row = 0; row < 9; row++) {
+            for (let col = 0; col < 9; col++) {
+                if (this.board[row][col] === 0) {
+                    this.notes[row][col].clear();
+                    for (let num = 1; num <= 9; num++) {
+                        if (this.isValidPlacement(this.board, row, col, num)) {
+                            this.notes[row][col].add(num);
+                        }
+                    }
+                }
+            }
+        }
+        this.render();
+    }
+
+    // Completion checking and animations
+    checkAndAnimateCompletions(row, col, num) {
+        if (!this.completedRows.has(row) && this.isRowComplete(row)) {
+            this.completedRows.add(row);
+            setTimeout(() => this.animations.animateRow(row), 100);
+        }
+
+        if (!this.completedCols.has(col) && this.isColComplete(col)) {
+            this.completedCols.add(col);
+            setTimeout(() => this.animations.animateCol(col), 200);
+        }
+
+        const boxIndex = Math.floor(row / 3) * 3 + Math.floor(col / 3);
+        if (!this.completedBoxes.has(boxIndex) && this.isBoxComplete(row, col)) {
+            this.completedBoxes.add(boxIndex);
+            setTimeout(() => this.animations.animateBox(row, col), 300);
+        }
+
+        if (!this.completedNumbers.has(num) && this.isNumberCompleted(num)) {
+            this.completedNumbers.add(num);
+            setTimeout(() => this.animations.animateNumber(num, this.board), 400);
+        }
+    }
+
+    isRowComplete(row) {
+        for (let col = 0; col < 9; col++) {
+            if (this.board[row][col] !== this.solution[row][col]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    isColComplete(col) {
+        for (let row = 0; row < 9; row++) {
+            if (this.board[row][col] !== this.solution[row][col]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    isBoxComplete(row, col) {
+        const boxRow = Math.floor(row / 3) * 3;
+        const boxCol = Math.floor(col / 3) * 3;
+        for (let i = 0; i < 3; i++) {
+            for (let j = 0; j < 3; j++) {
+                if (this.board[boxRow + i][boxCol + j] !== this.solution[boxRow + i][boxCol + j]) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    // Error checking
+    toggleAutoCheck() {
+        this.autoCheck = !this.autoCheck;
+        document.getElementById('autoCheckToggle').checked = this.autoCheck;
+        document.getElementById('checkAnswersBtn').style.display = this.autoCheck ? 'none' : 'inline-block';
+        this.revealedErrors.clear();
+        this.render();
+    }
+
+    checkAnswers() {
+        let errorCount = 0;
+        for (let row = 0; row < 9; row++) {
+            for (let col = 0; col < 9; col++) {
+                if (this.board[row][col] !== 0 && !this.given[row][col]) {
+                    if (this.board[row][col] !== this.solution[row][col]) {
+                        errorCount++;
+                    }
+                }
+            }
+        }
+
+        const resultEl = document.getElementById('checkResult');
+        const revealBtn = document.getElementById('revealErrorsBtn');
+
+        if (errorCount === 0) {
+            resultEl.textContent = '✓ All filled cells are correct!';
+            resultEl.className = 'result perfect';
+            revealBtn.style.display = 'none';
+        } else {
+            resultEl.textContent = `✗ You have ${errorCount} incorrect cell${errorCount > 1 ? 's' : ''}.`;
+            resultEl.className = 'result has-errors';
+            revealBtn.style.display = 'inline-block';
+        }
+
+        document.getElementById('checkModal').style.display = 'flex';
+    }
+
+    revealErrors() {
+        this.revealedErrors.clear();
+        for (let row = 0; row < 9; row++) {
+            for (let col = 0; col < 9; col++) {
+                if (this.board[row][col] !== 0 && !this.given[row][col]) {
+                    if (this.board[row][col] !== this.solution[row][col]) {
+                        this.revealedErrors.add(`${row},${col}`);
+                    }
+                }
+            }
+        }
+        document.getElementById('checkModal').style.display = 'none';
+        this.render();
+    }
+
+    isError(row, col) {
+        if (this.given[row][col]) return false;
+        if (this.board[row][col] === 0) return false;
+        
+        if (this.autoCheck && !this.theoryMode) {
+            return this.board[row][col] !== this.solution[row][col];
+        }
+
+        if (this.revealedErrors.has(`${row},${col}`)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    // Hints
+    getHint() {
+        if (this.hintsRemaining <= 0 || this.isPaused) return;
+
+        const allHints = this.hintFinder.findAllHints(this.board, this.notes);
+
+        if (allHints.length > 0) {
+            const randomIndex = Math.floor(Math.random() * allHints.length);
+            const selected = allHints[randomIndex];
+            this.currentHint = selected.hint;
+            this.showHintModal(selected.technique, selected.hint, true);
+        } else {
+            this.showHintModal('No Technique Found', null, false);
+        }
+    }
+
+    fillAllNotes() {
+        this.autoFillNotes();
+        document.getElementById('hintModal').style.display = 'none';
+        setTimeout(() => this.getHint(), 100);
+    }
+
+    showHintModal(technique, hint, found) {
+        document.getElementById('hintTechnique').textContent = technique;
+        
+        if (found && hint) {
+            document.getElementById('hintExplanation').textContent = hint.explanation;
+            document.getElementById('hintExplanation').style.display = 'block';
+            document.getElementById('hintHighlight').textContent = hint.highlight;
+            document.getElementById('hintHighlight').style.display = 'block';
+            document.getElementById('noHintWarning').style.display = 'none';
+            document.getElementById('applyHintBtn').style.display = hint.type === 'place' ? 'inline-block' : 'none';
+            document.getElementById('fillNotesBtn').style.display = 'none';
+
+            if (hint.row !== undefined && hint.col !== undefined) {
+                this.selectedCell = { row: hint.row, col: hint.col };
+                this.render();
+            }
+        } else {
+            document.getElementById('hintExplanation').style.display = 'none';
+            document.getElementById('hintHighlight').style.display = 'none';
+            document.getElementById('noHintWarning').style.display = 'block';
+            document.getElementById('applyHintBtn').style.display = 'none';
+            document.getElementById('fillNotesBtn').style.display = 'inline-block';
+        }
+
+        document.getElementById('hintModal').style.display = 'flex';
+    }
+
+    applyHint() {
+        if (!this.currentHint || this.currentHint.type !== 'place') return;
+        
+        this.hintsRemaining--;
+        document.getElementById('hintsRemaining').textContent = this.hintsRemaining;
+        document.getElementById('hintBtn').textContent = `💡 Hint (${this.hintsRemaining})`;
+        
+        this.saveState();
+        const { row, col, value } = this.currentHint;
+        this.board[row][col] = value;
+        this.notes[row][col].clear();
+        this.removeNotesFromRelated(row, col, value);
+        
+        this.checkAndAnimateCompletions(row, col, value);
+        
+        if (this.checkWin()) {
+            this.animations.animateGameComplete(row, col);
+            setTimeout(() => this.showWinModal(), 1500);
+        }
+
+        this.currentHint = null;
+        document.getElementById('hintModal').style.display = 'none';
+        this.render();
+    }
+
+    // Win condition
+    checkWin() {
+        for (let row = 0; row < 9; row++) {
+            for (let col = 0; col < 9; col++) {
+                if (this.board[row][col] !== this.solution[row][col]) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    showWinModal() {
+        clearInterval(this.timerInterval);
+        document.getElementById('winDifficulty').textContent = this.difficulty;
+        document.getElementById('winTime').textContent = document.getElementById('timer').textContent;
+        document.getElementById('winMistakes').textContent = this.mistakes;
+        document.getElementById('winModal').style.display = 'flex';
+    }
+
+    // Rendering
+    render() {
+        this.renderBoard();
+        this.renderNumberPad();
+    }
+
+    renderBoard() {
+        const boardEl = document.getElementById('board');
+        boardEl.innerHTML = '';
+
+        for (let row = 0; row < 9; row++) {
+            for (let col = 0; col < 9; col++) {
+                const cell = document.createElement('div');
+                cell.className = 'cell';
+                
+                if ((col + 1) % 3 === 0 && col !== 8) cell.classList.add('border-right');
+                if ((row + 1) % 3 === 0 && row !== 8) cell.classList.add('border-bottom');
+                
+                if (this.selectedCell) {
+                    const { row: selRow, col: selCol } = this.selectedCell;
+                    
+                    if (row === selRow || col === selCol) {
+                        cell.classList.add('highlighted-row-col');
+                    }
+                    
+                    const selBoxRow = Math.floor(selRow / 3);
+                    const selBoxCol = Math.floor(selCol / 3);
+                    if (Math.floor(row / 3) === selBoxRow && Math.floor(col / 3) === selBoxCol) {
+                        cell.classList.add('highlighted-box');
+                    }
+                    
+                    if (this.board[row][col] !== 0 && 
+                        this.board[row][col] === this.board[selRow][selCol]) {
+                        cell.classList.add('same-number');
+                    }
+                    
+                    if (row === selRow && col === selCol) {
+                        cell.classList.add('selected');
+                    }
+                }
+
+                if (this.hoveredNumber && this.board[row][col] === this.hoveredNumber) {
+                    cell.classList.add('hover-highlight');
+                }
+
+                if (this.given[row][col]) {
+                    cell.classList.add('given');
+                }
+
+                if (!this.given[row][col] && this.board[row][col] !== 0 && 
+                    this.board[row][col] === this.solution[row][col]) {
+                    cell.classList.add('correct');
+                }
+
+                if (this.isError(row, col)) {
+                    cell.classList.add('error');
+                }
+
+                if (this.revealedErrors.has(`${row},${col}`)) {
+                    cell.classList.add('revealed-error');
+                }
+
+                if (this.theoryMode && this.theorySavedState) {
+                    const savedValue = this.theorySavedState.board[row][col];
+                    const currentValue = this.board[row][col];
+                    if (currentValue !== 0 && currentValue !== savedValue && !this.given[row][col]) {
+                        cell.classList.add('theory-placed');
+                    }
+                }
+
+                let highlightNoteNumber = this.hoveredNumber;
+                if (!highlightNoteNumber && this.selectedCell) {
+                    const selVal = this.board[this.selectedCell.row][this.selectedCell.col];
+                    if (selVal !== 0) {
+                        highlightNoteNumber = selVal;
+                    }
+                }
+
+                if (this.board[row][col] !== 0) {
+                    cell.textContent = this.board[row][col];
+                } else if (this.notes[row][col].size > 0) {
+                    const notesGrid = document.createElement('div');
+                    notesGrid.className = 'notes-grid';
+                    for (let n = 1; n <= 9; n++) {
+                        const noteSpan = document.createElement('span');
+                        noteSpan.className = 'note';
+                        if (this.notes[row][col].has(n)) {
+                            noteSpan.textContent = n;
+                            if (highlightNoteNumber === n) {
+                                noteSpan.classList.add('highlighted-note');
+                            }
+                        }
+                        notesGrid.appendChild(noteSpan);
+                    }
+                    cell.appendChild(notesGrid);
+                }
+
+                const r = row;
+                const c = col;
+                
+                cell.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    this.selectCell(r, c);
+                });
+                
+                cell.addEventListener('mouseenter', () => {
+                    const num = this.board[r][c];
+                    if (num !== 0 && this.hoveredNumber !== num) {
+                        this.hoveredNumber = num;
+                        this.renderBoard();
+                    }
+                });
+
+                boardEl.appendChild(cell);
+            }
+        }
+
+        boardEl.addEventListener('mouseleave', () => {
+            if (this.hoveredNumber !== null) {
+                this.hoveredNumber = null;
+                this.renderBoard();
+            }
+        });
+    }
+
+    renderNumberPad() {
+        const padEl = document.getElementById('numberPad');
+        padEl.innerHTML = '';
+
+        for (let num = 1; num <= 9; num++) {
+            const btn = document.createElement('button');
+            btn.className = 'number-btn';
+            
+            const count = this.getCorrectNumberCount(num);
+            const isCompleted = count >= 9;
+            if (isCompleted) btn.classList.add('completed');
+
+            btn.innerHTML = `${num}<span class="count">${count}/9</span>`;
+            
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (!isCompleted) this.inputNumber(num);
+            });
+            btn.addEventListener('mouseenter', () => {
+                this.hoveredNumber = num;
+                this.render();
+            });
+            btn.addEventListener('mouseleave', () => {
+                this.hoveredNumber = null;
+                this.render();
+            });
+
+            padEl.appendChild(btn);
+        }
+    }
+
+    updateDifficultyButtons() {
+        document.querySelectorAll('.difficulty-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.difficulty === this.difficulty);
+        });
+    }
+
+    setupEventListeners() {
+        document.querySelectorAll('.difficulty-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                this.startNewGame(btn.dataset.difficulty);
+            });
+        });
+
+        document.getElementById('pauseBtn').addEventListener('click', () => this.togglePause());
+        document.getElementById('resumeBtn').addEventListener('click', () => this.togglePause());
+
+        document.getElementById('notesBtn').addEventListener('click', () => this.toggleNotes());
+        document.getElementById('autoNotesBtn').addEventListener('click', () => this.autoFillNotes());
+        document.getElementById('hintBtn').addEventListener('click', () => this.getHint());
+        document.getElementById('undoBtn').addEventListener('click', () => this.undo());
+        document.getElementById('eraseBtn').addEventListener('click', () => this.eraseCell());
+        document.getElementById('newGameBtn').addEventListener('click', () => this.startNewGame(this.difficulty));
+
+        document.getElementById('autoCheckToggle').addEventListener('change', (e) => {
+            this.autoCheck = e.target.checked;
+            document.getElementById('checkAnswersBtn').style.display = this.autoCheck ? 'none' : 'inline-block';
+            this.revealedErrors.clear();
+            this.render();
+        });
+
+        document.getElementById('checkAnswersBtn').addEventListener('click', () => this.checkAnswers());
+        document.getElementById('closeCheckBtn').addEventListener('click', () => {
+            document.getElementById('checkModal').style.display = 'none';
+        });
+        document.getElementById('revealErrorsBtn').addEventListener('click', () => this.revealErrors());
+
+        document.getElementById('enterTheoryBtn').addEventListener('click', () => this.enterTheoryMode());
+        document.getElementById('applyTheoryBtn').addEventListener('click', () => this.exitTheoryMode(true));
+        document.getElementById('revertTheoryBtn').addEventListener('click', () => this.exitTheoryMode(false));
+
+        document.getElementById('cancelApplyBtn').addEventListener('click', () => {
+            document.getElementById('confirmApplyModal').style.display = 'none';
+        });
+        document.getElementById('confirmApplyBtn').addEventListener('click', () => this.confirmApplyTheoryBoard());
+
+        document.getElementById('playAgainBtn').addEventListener('click', () => {
+            document.getElementById('winModal').style.display = 'none';
+            this.startNewGame(this.difficulty);
+        });
+
+        document.getElementById('closeHintBtn').addEventListener('click', () => {
+            document.getElementById('hintModal').style.display = 'none';
+            this.currentHint = null;
+        });
+        document.getElementById('applyHintBtn').addEventListener('click', () => this.applyHint());
+        document.getElementById('fillNotesBtn').addEventListener('click', () => this.fillAllNotes());
+
+        document.addEventListener('keydown', (e) => {
+            if (this.isPaused) return;
+
+            const hintModalOpen = document.getElementById('hintModal').style.display === 'flex';
+            const confirmModalOpen = document.getElementById('confirmApplyModal').style.display === 'flex';
+            const winModalOpen = document.getElementById('winModal').style.display === 'flex';
+            const checkModalOpen = document.getElementById('checkModal').style.display === 'flex';
+            
+            if (hintModalOpen || confirmModalOpen || winModalOpen || checkModalOpen) return;
+
+            const num = parseInt(e.key);
+            if (num >= 1 && num <= 9) {
+                this.inputNumber(num);
+            } else if (e.key === 'Backspace' || e.key === 'Delete') {
+                this.eraseCell();
+            } else if (e.key === 'z' && (e.ctrlKey || e.metaKey)) {
+                e.preventDefault();
+                this.undo();
+            } else if (e.key === 'n' || e.key === 'N') {
+                this.toggleNotes();
+            } else if (e.key === 't' || e.key === 'T') {
+                if (this.theoryMode) {
+                    this.exitTheoryMode(false);
+                } else {
+                    this.enterTheoryMode();
+                }
+            } else if (this.selectedCell) {
+                let { row, col } = this.selectedCell;
+                if (e.key === 'ArrowUp') row = Math.max(0, row - 1);
+                if (e.key === 'ArrowDown') row = Math.min(8, row + 1);
+                if (e.key === 'ArrowLeft') col = Math.max(0, col - 1);
+                if (e.key === 'ArrowRight') col = Math.min(8, col + 1);
+                
+                if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+                    e.preventDefault();
+                    this.selectCell(row, col);
+                }
+            }
+        });
+
+        document.addEventListener('click', (e) => {
+            const board = document.getElementById('board');
+            const controls = document.querySelector('.controls');
+            
+            if (!board.contains(e.target) && !controls.contains(e.target)) {
+                this.selectedCell = null;
+                this.render();
+            }
+        });
+    }
+}
+
+
+index.html:
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sudoku Game</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <h1>🧩 Sudoku</h1>
+
+    <div class="theory-banner" id="theoryBanner">
+        🧪 THEORY MODE - Test your hypothesis without penalties!
+    </div>
+
+    <div class="difficulty-container">
+        <button class="difficulty-btn easy" data-difficulty="easy">Easy</button>
+        <button class="difficulty-btn medium active" data-difficulty="medium">Medium</button>
+        <button class="difficulty-btn hard" data-difficulty="hard">Hard</button>
+        <button class="difficulty-btn expert" data-difficulty="expert">Expert</button>
+        <button class="difficulty-btn master" data-difficulty="master">Master</button>
+        <button class="difficulty-btn extreme" data-difficulty="extreme">Extreme</button>
+    </div>
+
+    <div class="settings-container">
+        <div class="setting-item">
+            <input type="checkbox" id="autoCheckToggle" checked>
+            <label for="autoCheckToggle">Auto-check answers</label>
+        </div>
+        <button class="check-answers-btn" id="checkAnswersBtn" style="display: none;">📋 Check Answers</button>
+    </div>
+
+    <div class="stats-bar">
+        <div class="stat-item">
+            <span>⏱️</span>
+            <span class="timer" id="timer">00:00</span>
+            <button class="pause-btn" id="pauseBtn">⏸️</button>
+        </div>
+        <div class="stat-item">
+            <span>❌</span>
+            <span>Mistakes: <span id="mistakes">0</span>/3</span>
+        </div>
+        <div class="stat-item">
+            <span>💡</span>
+            <span>Hints: <span id="hintsRemaining">3</span></span>
+        </div>
+    </div>
+
+    <div class="game-container">
+        <div class="board-wrapper">
+            <div class="board" id="board"></div>
+            <div class="ripple-overlay" id="rippleOverlay"></div>
+            <div class="pause-overlay" id="pauseOverlay" style="display: none;">
+                <div class="icon">⏸️</div>
+                <div class="text">Game Paused</div>
+                <button class="resume-btn" id="resumeBtn">Resume</button>
+            </div>
+        </div>
+
+        <div class="controls">
+            <div class="number-pad" id="numberPad"></div>
+            <div class="action-buttons">
+                <button class="action-btn" id="notesBtn">✏️ Notes OFF</button>
+                <button class="action-btn auto-notes" id="autoNotesBtn">📝 Auto Notes</button>
+                <button class="action-btn" id="hintBtn">💡 Hint (3)</button>
+                <button class="action-btn" id="undoBtn">↩️ Undo</button>
+                <button class="action-btn" id="eraseBtn">🗑️ Erase</button>
+                <button class="action-btn" id="newGameBtn">🔄 New Game</button>
+            </div>
+
+            <div class="theory-buttons">
+                <button class="theory-btn enter" id="enterTheoryBtn">🧪 Enter Theory Mode</button>
+                <button class="theory-btn apply" id="applyTheoryBtn" disabled>✅ Apply Board</button>
+                <button class="theory-btn revert" id="revertTheoryBtn" disabled>↩️ Revert to Saved</button>
+            </div>
+
+            <div class="keyboard-info">
+                <strong>Keyboard Shortcuts:</strong>
+                1-9: Enter number<br>
+                N: Toggle notes<br>
+                Arrows: Navigate<br>
+                Delete: Erase<br>
+                Ctrl+Z: Undo<br>
+                T: Toggle Theory Mode
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="winModal" style="display: none;">
+        <div class="modal">
+            <div class="icon">🎉</div>
+            <h2>Congratulations!</h2>
+            <p>You completed the <span id="winDifficulty">medium</span> puzzle!</p>
+            <p class="stats">Time: <span id="winTime">00:00</span> | Mistakes: <span id="winMistakes">0</span></p>
+            <button class="play-again-btn" id="playAgainBtn">Play Again</button>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="hintModal" style="display: none;">
+        <div class="hint-modal">
+            <h3>💡 Hint</h3>
+            <div class="technique" id="hintTechnique">Naked Single</div>
+            <div class="explanation" id="hintExplanation"></div>
+            <div class="highlight-info" id="hintHighlight"></div>
+            <div class="no-hint-warning" id="noHintWarning" style="display: none;">
+                No logical technique found with your current notes. Try filling in more notes or use the button below to auto-fill all possible candidates.
+            </div>
+            <div class="btn-group">
+                <button class="close-btn" id="closeHintBtn">Got it!</button>
+                <button class="apply-btn" id="applyHintBtn">Apply & Close</button>
+                <button class="fill-notes-btn" id="fillNotesBtn">Fill All Notes</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="confirmApplyModal" style="display: none;">
+        <div class="confirm-modal">
+            <h3>📋 Apply Theory Board?</h3>
+            <p>You are about to apply all changes made in Theory Mode to your actual game board.</p>
+            <div class="changes-summary" id="changesSummary"></div>
+            <p><strong>Note:</strong> Any numbers that conflict with Sudoku rules or are incorrect will be counted as mistakes.</p>
+            <div class="btn-group">
+                <button class="cancel-btn" id="cancelApplyBtn">Cancel</button>
+                <button class="confirm-btn" id="confirmApplyBtn">Apply Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="checkModal" style="display: none;">
+        <div class="check-modal">
+            <h3>📋 Check Results</h3>
+            <div class="result" id="checkResult"></div>
+            <div class="btn-group">
+                <button class="modal-btn close-btn" id="closeCheckBtn">Close</button>
+                <button class="modal-btn reveal-btn" id="revealErrorsBtn">Reveal Errors</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="js/main.js"></script>
+</body>
+</html>
