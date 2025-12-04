@@ -701,155 +701,171 @@ export class SudokuGame {
         this.renderNumberPad();
     }
 
-    renderBoard() {
-        const boardEl = document.getElementById('board');
-        boardEl.innerHTML = '';
+renderBoard() {
+    const boardEl = document.getElementById('board');
+    
+    // Remove old event listener by cloning
+    const newBoardEl = boardEl.cloneNode(false);
+    boardEl.parentNode.replaceChild(newBoardEl, boardEl);
 
-        for (let row = 0; row < 9; row++) {
-            for (let col = 0; col < 9; col++) {
-                const cell = document.createElement('div');
-                cell.className = 'cell';
+    for (let row = 0; row < 9; row++) {
+        for (let col = 0; col < 9; col++) {
+            const cell = document.createElement('div');
+            cell.className = 'cell';
+            
+            if ((col + 1) % 3 === 0 && col !== 8) cell.classList.add('border-right');
+            if ((row + 1) % 3 === 0 && row !== 8) cell.classList.add('border-bottom');
+            
+            if (this.selectedCell) {
+                const { row: selRow, col: selCol } = this.selectedCell;
                 
-                if ((col + 1) % 3 === 0 && col !== 8) cell.classList.add('border-right');
-                if ((row + 1) % 3 === 0 && row !== 8) cell.classList.add('border-bottom');
+                if (row === selRow || col === selCol) {
+                    cell.classList.add('highlighted-row-col');
+                }
                 
-                if (this.selectedCell) {
-                    const { row: selRow, col: selCol } = this.selectedCell;
-                    
-                    if (row === selRow || col === selCol) {
-                        cell.classList.add('highlighted-row-col');
-                    }
-                    
-                    const selBoxRow = Math.floor(selRow / 3);
-                    const selBoxCol = Math.floor(selCol / 3);
-                    if (Math.floor(row / 3) === selBoxRow && Math.floor(col / 3) === selBoxCol) {
-                        cell.classList.add('highlighted-box');
-                    }
-                    
-                    if (this.board[row][col] !== 0 && 
-                        this.board[row][col] === this.board[selRow][selCol]) {
-                        cell.classList.add('same-number');
-                    }
-                    
-                    if (row === selRow && col === selCol) {
-                        cell.classList.add('selected');
-                    }
+                const selBoxRow = Math.floor(selRow / 3);
+                const selBoxCol = Math.floor(selCol / 3);
+                if (Math.floor(row / 3) === selBoxRow && Math.floor(col / 3) === selBoxCol) {
+                    cell.classList.add('highlighted-box');
                 }
-
-                if (this.hoveredNumber && this.board[row][col] === this.hoveredNumber) {
-                    cell.classList.add('hover-highlight');
-                }
-
-                if (this.given[row][col]) {
-                    cell.classList.add('given');
-                }
-
-                if (!this.given[row][col] && this.board[row][col] !== 0 && 
-                    this.board[row][col] === this.solution[row][col]) {
-                    cell.classList.add('correct');
-                }
-
-                if (this.isError(row, col)) {
-                    cell.classList.add('error');
-                }
-
-                if (this.revealedErrors.has(`${row},${col}`)) {
-                    cell.classList.add('revealed-error');
-                }
-
-                if (this.theoryMode && this.theorySavedState) {
-                    const savedValue = this.theorySavedState.board[row][col];
-                    const currentValue = this.board[row][col];
-                    if (currentValue !== 0 && currentValue !== savedValue && !this.given[row][col]) {
-                        cell.classList.add('theory-placed');
-                    }
-                }
-
-                let highlightNoteNumber = this.hoveredNumber;
-                if (!highlightNoteNumber && this.selectedCell) {
-                    const selVal = this.board[this.selectedCell.row][this.selectedCell.col];
-                    if (selVal !== 0) {
-                        highlightNoteNumber = selVal;
-                    }
-                }
-
-                if (this.board[row][col] !== 0) {
-                    cell.textContent = this.board[row][col];
-                } else if (this.notes[row][col].size > 0) {
-                    const notesGrid = document.createElement('div');
-                    notesGrid.className = 'notes-grid';
-                    for (let n = 1; n <= 9; n++) {
-                        const noteSpan = document.createElement('span');
-                        noteSpan.className = 'note';
-                        if (this.notes[row][col].has(n)) {
-                            noteSpan.textContent = n;
-                            if (highlightNoteNumber === n) {
-                                noteSpan.classList.add('highlighted-note');
-                            }
-                        }
-                        notesGrid.appendChild(noteSpan);
-                    }
-                    cell.appendChild(notesGrid);
-                }
-
-                const r = row;
-                const c = col;
                 
-                cell.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    this.selectCell(r, c);
-                });
+                if (this.board[row][col] !== 0 && 
+                    this.board[row][col] === this.board[selRow][selCol]) {
+                    cell.classList.add('same-number');
+                }
                 
-                cell.addEventListener('mouseenter', () => {
-                    const num = this.board[r][c];
-                    if (num !== 0 && this.hoveredNumber !== num) {
-                        this.hoveredNumber = num;
-                        this.renderBoard();
-                    }
-                });
-
-                boardEl.appendChild(cell);
+                if (row === selRow && col === selCol) {
+                    cell.classList.add('selected');
+                }
             }
-        }
 
-        boardEl.addEventListener('mouseleave', () => {
-            if (this.hoveredNumber !== null) {
-                this.hoveredNumber = null;
-                this.renderBoard();
+            if (this.hoveredNumber && this.board[row][col] === this.hoveredNumber) {
+                cell.classList.add('hover-highlight');
+            }
+
+            if (this.given[row][col]) {
+                cell.classList.add('given');
+            }
+
+            if (!this.given[row][col] && this.board[row][col] !== 0 && 
+                this.board[row][col] === this.solution[row][col]) {
+                cell.classList.add('correct');
+            }
+
+            if (this.isError(row, col)) {
+                cell.classList.add('error');
+            }
+
+            if (this.revealedErrors.has(`${row},${col}`)) {
+                cell.classList.add('revealed-error');
+            }
+
+            if (this.theoryMode && this.theorySavedState) {
+                const savedValue = this.theorySavedState.board[row][col];
+                const currentValue = this.board[row][col];
+                if (currentValue !== 0 && currentValue !== savedValue && !this.given[row][col]) {
+                    cell.classList.add('theory-placed');
+                }
+            }
+
+            let highlightNoteNumber = this.hoveredNumber;
+            if (!highlightNoteNumber && this.selectedCell) {
+                const selVal = this.board[this.selectedCell.row][this.selectedCell.col];
+                if (selVal !== 0) {
+                    highlightNoteNumber = selVal;
+                }
+            }
+
+            if (this.board[row][col] !== 0) {
+                cell.textContent = this.board[row][col];
+            } else if (this.notes[row][col].size > 0) {
+                const notesGrid = document.createElement('div');
+                notesGrid.className = 'notes-grid';
+                for (let n = 1; n <= 9; n++) {
+                    const noteSpan = document.createElement('span');
+                    noteSpan.className = 'note';
+                    if (this.notes[row][col].has(n)) {
+                        noteSpan.textContent = n;
+                        if (highlightNoteNumber === n) {
+                            noteSpan.classList.add('highlighted-note');
+                        }
+                    }
+                    notesGrid.appendChild(noteSpan);
+                }
+                cell.appendChild(notesGrid);
+            }
+
+            const r = row;
+            const c = col;
+            
+            cell.addEventListener('click', (e) => {
+                e.stopPropagation();
+                this.selectCell(r, c);
+            });
+            
+            cell.addEventListener('mouseenter', () => {
+                const num = this.board[r][c];
+                if (num !== 0 && this.hoveredNumber !== num) {
+                    this.hoveredNumber = num;
+                    this.renderBoard();
+                }
+            });
+
+            newBoardEl.appendChild(cell);
+        }
+    }
+
+    // Clear hover when leaving board
+    newBoardEl.addEventListener('mouseleave', () => {
+        if (this.hoveredNumber !== null) {
+            this.hoveredNumber = null;
+            this.renderBoard();
+        }
+    });
+}
+
+renderNumberPad() {
+    const padEl = document.getElementById('numberPad');
+    padEl.innerHTML = '';
+
+    for (let num = 1; num <= 9; num++) {
+        const btn = document.createElement('button');
+        btn.className = 'number-btn';
+        
+        const count = this.getCorrectNumberCount(num);
+        const isCompleted = count >= 9;
+        if (isCompleted) btn.classList.add('completed');
+
+        btn.innerHTML = `${num}<span class="count">${count}/9</span>`;
+        
+        const n = num; // Capture in closure
+        
+        btn.addEventListener('mousedown', (e) => {
+            // Prevent focus change that might deselect
+            e.preventDefault();
+        });
+        
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            if (!isCompleted && this.selectedCell) {
+                this.inputNumber(n);
             }
         });
+        
+        btn.addEventListener('mouseenter', () => {
+            this.hoveredNumber = n;
+            this.renderBoard();
+        });
+        
+        btn.addEventListener('mouseleave', () => {
+            this.hoveredNumber = null;
+            this.renderBoard();
+        });
+
+        padEl.appendChild(btn);
     }
-
-    renderNumberPad() {
-        const padEl = document.getElementById('numberPad');
-        padEl.innerHTML = '';
-
-        for (let num = 1; num <= 9; num++) {
-            const btn = document.createElement('button');
-            btn.className = 'number-btn';
-            
-            const count = this.getCorrectNumberCount(num);
-            const isCompleted = count >= 9;
-            if (isCompleted) btn.classList.add('completed');
-
-            btn.innerHTML = `${num}<span class="count">${count}/9</span>`;
-            
-            btn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                if (!isCompleted) this.inputNumber(num);
-            });
-            btn.addEventListener('mouseenter', () => {
-                this.hoveredNumber = num;
-                this.render();
-            });
-            btn.addEventListener('mouseleave', () => {
-                this.hoveredNumber = null;
-                this.render();
-            });
-
-            padEl.appendChild(btn);
-        }
-    }
+}
 
 updateDifficultyButtons() {
     document.querySelectorAll('.difficulty-btn').forEach(btn => {
@@ -1029,46 +1045,53 @@ closePracticeDropdown() {
         document.getElementById('applyHintBtn').addEventListener('click', () => this.applyHint());
         document.getElementById('fillNotesBtn').addEventListener('click', () => this.fillAllNotes());
 
-        document.addEventListener('keydown', (e) => {
-            if (this.isPaused) return;
+document.addEventListener('keydown', (e) => {
+    // ESC key toggles pause
+    if (e.key === 'Escape') {
+        this.togglePause();
+        return;
+    }
 
-            const hintModalOpen = document.getElementById('hintModal').style.display === 'flex';
-            const confirmModalOpen = document.getElementById('confirmApplyModal').style.display === 'flex';
-            const winModalOpen = document.getElementById('winModal').style.display === 'flex';
-            const checkModalOpen = document.getElementById('checkModal').style.display === 'flex';
-            
-            if (hintModalOpen || confirmModalOpen || winModalOpen || checkModalOpen) return;
+    if (this.isPaused) return;
 
-            const num = parseInt(e.key);
-            if (num >= 1 && num <= 9) {
-                this.inputNumber(num);
-            } else if (e.key === 'Backspace' || e.key === 'Delete') {
-                this.eraseCell();
-            } else if (e.key === 'z' && (e.ctrlKey || e.metaKey)) {
-                e.preventDefault();
-                this.undo();
-            } else if (e.key === 'n' || e.key === 'N') {
-                this.toggleNotes();
-            } else if (e.key === 't' || e.key === 'T') {
-                if (this.theoryMode) {
-                    this.exitTheoryMode(false);
-                } else {
-                    this.enterTheoryMode();
-                }
-            } else if (this.selectedCell) {
-                let { row, col } = this.selectedCell;
-                if (e.key === 'ArrowUp') row = Math.max(0, row - 1);
-                if (e.key === 'ArrowDown') row = Math.min(8, row + 1);
-                if (e.key === 'ArrowLeft') col = Math.max(0, col - 1);
-                if (e.key === 'ArrowRight') col = Math.min(8, col + 1);
-                
-                if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
-                    e.preventDefault();
-                    this.selectCell(row, col);
-                }
-            }
-        });
+    const hintModalOpen = document.getElementById('hintModal').style.display === 'flex';
+    const confirmModalOpen = document.getElementById('confirmApplyModal').style.display === 'flex';
+    const winModalOpen = document.getElementById('winModal').style.display === 'flex';
+    const checkModalOpen = document.getElementById('checkModal').style.display === 'flex';
+    const techniqueModalOpen = document.getElementById('techniqueModal')?.style.display === 'flex';
+    
+    if (hintModalOpen || confirmModalOpen || winModalOpen || checkModalOpen || techniqueModalOpen) return;
+
+    const num = parseInt(e.key);
+    if (num >= 1 && num <= 9) {
+        this.inputNumber(num);
+    } else if (e.key === 'Backspace' || e.key === 'Delete') {
+        this.eraseCell();
+    } else if (e.key === 'z' && (e.ctrlKey || e.metaKey)) {
+        e.preventDefault();
+        this.undo();
+    } else if (e.key === 'n' || e.key === 'N') {
+        this.toggleNotes();
+    } else if (e.key === 't' || e.key === 'T') {
+        if (this.theoryMode) {
+            this.exitTheoryMode(false);
+        } else {
+            this.enterTheoryMode();
+        }
+    } else if (this.selectedCell) {
+        let { row, col } = this.selectedCell;
+        if (e.key === 'ArrowUp') row = Math.max(0, row - 1);
+        if (e.key === 'ArrowDown') row = Math.min(8, row + 1);
+        if (e.key === 'ArrowLeft') col = Math.max(0, col - 1);
+        if (e.key === 'ArrowRight') col = Math.min(8, col + 1);
         
+        if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
+            e.preventDefault();
+            this.selectCell(row, col);
+        }
+    }
+});
+
             // Practice mode dropdown
     document.getElementById('practiceBtn').addEventListener('click', (e) => {
         e.stopPropagation();
