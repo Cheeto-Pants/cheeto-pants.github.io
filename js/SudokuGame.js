@@ -803,14 +803,21 @@ renderBoard() {
                 this.selectCell(r, c);
             });
             
-            cell.addEventListener('mouseenter', () => {
-                const num = this.board[r][c];
-                if (num !== 0 && this.hoveredNumber !== num) {
-                    this.hoveredNumber = num;
-                    this.renderBoard();
-                }
-            });
-
+cell.addEventListener('mouseenter', () => {
+    const num = this.board[r][c];
+    if (num !== 0) {
+        if (this.hoveredNumber !== num) {
+            this.hoveredNumber = num;
+            this.renderBoard();
+        }
+    } else {
+        // Clear hover when entering an empty cell
+        if (this.hoveredNumber !== null) {
+            this.hoveredNumber = null;
+            this.renderBoard();
+        }
+    }
+});
             newBoardEl.appendChild(cell);
         }
     }
